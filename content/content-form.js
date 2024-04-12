@@ -22,7 +22,7 @@ const checkInputsForButton = () => {
  * @param {string} description
  * @returns {Object} Node
  */
-const createInvalidDescriptionContent = (description) => {
+const createPTagForInvalid = (description) => {
   const newContent = createDescriptionContent("p", description);
   newContent.classList.add("description-invalid");
   return newContent;
@@ -31,7 +31,7 @@ const createInvalidDescriptionContent = (description) => {
 /**
  * 해당 node에 criteria에 맞춘 Event를 달아준다.
  * description이 없을 경우 조건에 맞는 input 색깔만 바뀜
- * criteria가 없을 경우 html 기본 조건에만 맞춤
+ * 특정 criteria가 없을 경우 html 기본 조건에만 맞춤
  * @param {Object} node
  * @param {string} description
  * @param {function} criteria
@@ -41,37 +41,32 @@ const invalidInputEventHandler = (
   description = "",
   criteria = () => true
 ) => {
-  let newContent;
-  description &&
-    (() => (newContent = createInvalidDescriptionContent(description)))();
+  const descriptionContent = createPTagForInvalid(description);
+
   node.addEventListener("focusin", (event) => {
     (() => {
-      description && newContent.remove();
+      descriptionContent.remove();
       node.classList.remove("content-form__input--invalid");
       node.classList.remove("content-form__input--valid");
     })();
   });
+
   node.addEventListener("focusout", (event) => {
-    criteria() && node.checkValidity()
-      ? (() => {
-          description && newContent.remove();
-          node.classList.remove("content-form__input--invalid");
-          node.classList.add("content-form__input--valid");
-          checkInputsForButton();
-        })()
-      : node.value === ""
-      ? (() => {
-          description && newContent.remove();
-          node.classList.remove("content-form__input--invalid");
-          node.classList.remove("content-form__input--valid");
-          checkInputsForButton();
-        })()
-      : (() => {
-          description && node.after(newContent);
-          node.classList.remove("content-form__input--valid");
-          node.classList.add("content-form__input--invalid");
-          checkInputsForButton();
-        })();
+    if (node.value === "") {
+      descriptionContent.remove();
+      node.classList.remove("content-form__input--invalid");
+      node.classList.remove("content-form__input--valid");
+    } else if (criteria() && node.checkValidity()) {
+      descriptionContent.remove();
+      node.classList.remove("content-form__input--invalid");
+      node.classList.add("content-form__input--valid");
+    } else {
+      node.after(descriptionContent);
+      node.classList.remove("content-form__input--valid");
+      node.classList.add("content-form__input--invalid");
+    }
+
+    checkInputsForButton();
   });
 };
 
@@ -82,24 +77,23 @@ export const invalidEmailHandler = () => {
 
 export const invalidPasswordHandler = () => {
   const passwordNode = document.querySelector(".content-form__input--password");
-  invalidInputEventHandler(passwordNode, "비밀번호를 8자 이상 입력해주세요",()=>passwordNode.value!=="");
+  invalidInputEventHandler(
+    passwordNode,
+    "비밀번호를 8자 이상 입력해주세요",
+    () => passwordNode.value !== ""
+  );
 };
 
 export const invalidPasswordAgainHandler = () => {
   const passwordAgainNode = document.querySelector(
     ".content-form__input--password-again"
   );
+  const passwordNode = document.querySelector(".content-form__input--password");
 
-  const customValidityTest = () => {
-    const passwordNode = document.querySelector(
-      ".content-form__input--password"
-    );
-    return passwordNode.value === passwordAgainNode.value;
-  };
   invalidInputEventHandler(
     passwordAgainNode,
     "비밀번호가 일치하지 않습니다.",
-    customValidityTest
+    () => passwordNode.value === passwordAgainNode.value
   );
 };
 
