@@ -6,7 +6,7 @@ import { Button } from "@/shared/ui/button";
 import { Dropdown } from "@/widgets/DropDown";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
-import { ChangeEvent, Fragment, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export const getStaticProps = (async () => {
   const likeRes = await fetch(`${BASE_URL}/articles?pageSize=3&&orderBy=like`);
@@ -22,26 +22,29 @@ export default function BoardsPage({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [article, setArticle] = useState<Article[]>([]);
   const [sort, setSort] = useState<SORT_OBJECT_KEY_TYPE>("recent");
-  const [isLoading, setLoading] = useState<boolean>(true);
-  const [keyword, setKeyword] = useState<string>("");
-  const [value, setValue] = useState<string>("");
+  const [isLoading, setLoading] = useState(true);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const [keyword, setKeyword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setKeyword(value);
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(() => e.target.value);
-  };
-
-  useEffect(() => {
+  function getArticle(sort: SORT_OBJECT_KEY_TYPE, keyword: string) {
     fetch(`${BASE_URL}/articles?orderBy=${sort}&&keyword=${keyword}`)
       .then((res) => res.json())
       .then((data) => {
         setArticle(data.list ?? []);
         setLoading(false);
+      })
+      .catch((e: Error) => {
+        alert(e.message);
       });
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchRef.current) setKeyword(searchRef.current.value);
+  };
+
+  useEffect(() => {
+    getArticle(sort, keyword);
   }, [sort, keyword]);
 
   return (
@@ -63,7 +66,13 @@ export default function BoardsPage({
                     : "hidden h-[167px] lg:block"
               }
             >
-              <BestPostCard article={item} />
+              <BestPostCard
+                createdAt={item.createdAt}
+                image={item.image}
+                likeCount={item.likeCount}
+                title={item.title}
+                nickname={item.writer.nickname}
+              />
             </article>
           ))}
         </section>
@@ -75,24 +84,32 @@ export default function BoardsPage({
             <Button>글쓰기</Button>
           </div>
         </header>
-        <form onSubmit={handleSubmit}>
-          <section className="mb-6 mt-4 flex items-center gap-2 md:mt-6 md:gap-4">
+        <section className="mb-6 mt-4 flex items-center gap-2 md:mt-6 md:gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-grow">
             <input
-              type="text"
+              type="search"
               name="search"
               placeholder="검색할 상품을 입력해주세요."
-              onChange={handleChange}
-              value={value}
-              className="h-[42px] flex-grow rounded-xl bg-[#f3f4f6] bg-input-placeholder bg-[16px] bg-no-repeat py-2 pl-11"
+              ref={searchRef}
+              className="h-[42px] flex-grow rounded-xl bg-[#f3f4f6] bg-input-placeholder bg-[16px] bg-no-repeat py-2 pl-11 pr-3"
             />
-            <Dropdown setValue={setSort} value={sort} />
-          </section>
-        </form>
+          </form>
+          <Dropdown setValue={setSort} value={sort} />
+        </section>
         <section>
           {isLoading ? (
             <div>로딩중입니다.</div>
           ) : (
-            article.map((item) => <PostCard key={item.id} item={item} />)
+            article.map((item) => (
+              <PostCard
+                key={item.id}
+                createdAt={item.createdAt}
+                image={item.image}
+                likeCount={item.likeCount}
+                nickname={item.writer.nickname}
+                title={item.title}
+              />
+            ))
           )}
         </section>
       </article>
