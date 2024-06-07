@@ -1,12 +1,19 @@
-import { PropsWithChildren } from "react";
+interface Props {
+  value: string;
+  className?: string;
+  disabled?: boolean;
+}
 
-export function Button({ children }: PropsWithChildren) {
+export function Button({ value, className, disabled }: Props) {
   return (
-    <button
-      type="button"
-      className="bg-[#3692ff] py-3 px-[23px] rounded-lg text-white hover:bg-[#1967D6] disabled:bg-[#9CA3AF]"
-    >
-      {children}
-    </button>
+    <input
+      type="submit"
+      className={
+        "flex items-center justify-center rounded-lg bg-[#3692ff] text-white hover:cursor-pointer hover:bg-[#1967D6] disabled:bg-[#9CA3AF] " +
+        className
+      }
+      disabled={disabled}
+      value={value}
+    />
   );
 }

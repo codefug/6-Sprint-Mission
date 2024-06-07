@@ -29,3 +29,4 @@ https://panda-market-api.vercel.app/docs/#/
 
 1. 기본 페이지 SSR로 수정
 2. 상품 상세 페이지 SSR로 구현
+3. react-hook-form 써보기

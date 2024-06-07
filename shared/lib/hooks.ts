@@ -30,11 +30,11 @@ export const useScreenDetector = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("resize", debounce(handleWindowSizeChange, 500));
+    window.addEventListener("resize", debounce(handleWindowSizeChange, 100));
     return () => {
       window.removeEventListener(
         "resize",
-        debounce(handleWindowSizeChange, 500),
+        debounce(handleWindowSizeChange, 100),
       );
     };
   }, []);

@@ -6,7 +6,8 @@ import { Button } from "@/shared/ui/button";
 import { Dropdown } from "@/widgets/DropDown";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export const getStaticProps = (async () => {
   const likeRes = await fetch(`${BASE_URL}/articles?pageSize=3&&orderBy=like`);
@@ -80,9 +81,9 @@ export default function BoardsPage({
       <article className="mt-10">
         <header className="flex items-center justify-between text-xl font-bold">
           게시글
-          <div className="text-base">
-            <Button>글쓰기</Button>
-          </div>
+          <Link href="/addboard" className="text-base">
+            <Button className="h-[42px] w-[88px]" value="글쓰기" />
+          </Link>
         </header>
         <section className="mb-6 mt-4 flex items-center gap-2 md:mt-6 md:gap-4">
           <form onSubmit={handleSubmit} className="flex flex-grow">

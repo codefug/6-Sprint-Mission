@@ -1,6 +1,4 @@
 export function formatDate(date: Date) {
-  console.log(date.toJSON());
-  console.log(date.getMonth());
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
