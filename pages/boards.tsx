@@ -49,9 +49,9 @@ export default function BoardsPage({
       <Head>
         <title>자유 게시판</title>
       </Head>
-      <article className="flex flex-col gap-4 mt-4 md:mt-6">
+      <article className="mt-4 flex flex-col gap-4 md:mt-6">
         <header className="text-xl font-bold">베스트 게시글</header>
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-4 lg:gap-6 h-[167px]">
+        <section className="grid h-[167px] grid-cols-1 gap-0 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-6">
           {likeList.map((item, index) => (
             <article
               key={item.id}
@@ -59,8 +59,8 @@ export default function BoardsPage({
                 index === 0
                   ? "h-[167px]"
                   : index === 1
-                    ? "hidden md:block h-[167px]"
-                    : "hidden lg:block h-[167px]"
+                    ? "hidden h-[167px] md:block"
+                    : "hidden h-[167px] lg:block"
               }
             >
               <BestPostCard article={item} />
@@ -69,21 +69,21 @@ export default function BoardsPage({
         </section>
       </article>
       <article className="mt-10">
-        <header className="text-xl font-bold flex justify-between items-center">
+        <header className="flex items-center justify-between text-xl font-bold">
           게시글
           <div className="text-base">
             <Button>글쓰기</Button>
           </div>
         </header>
         <form onSubmit={handleSubmit}>
-          <section className="flex items-center gap-2 md:gap-4 mt-4 md:mt-6 mb-6">
+          <section className="mb-6 mt-4 flex items-center gap-2 md:mt-6 md:gap-4">
             <input
               type="text"
               name="search"
               placeholder="검색할 상품을 입력해주세요."
               onChange={handleChange}
               value={value}
-              className="h-[42px] rounded-xl flex-grow py-2 pl-11 bg-[#f3f4f6] bg-input-placeholder bg-no-repeat bg-[16px]"
+              className="h-[42px] flex-grow rounded-xl bg-[#f3f4f6] bg-input-placeholder bg-[16px] bg-no-repeat py-2 pl-11"
             />
             <Dropdown setValue={setSort} value={sort} />
           </section>
