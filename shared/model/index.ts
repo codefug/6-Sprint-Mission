@@ -27,7 +27,7 @@ export type Comments = {
   nextCursor: number;
   list: {
     writer: {
-      image: string;
+      image: string | null;
       nickname: string;
       id: number;
     };

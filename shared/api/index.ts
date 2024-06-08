@@ -7,7 +7,9 @@ export async function getArticleWithId(id: string) {
 }
 
 export async function getCommentWithId(id: string) {
-  const res = await fetch(`${process.env.BASE_URL}/articles/${id}/comments`);
+  const res = await fetch(
+    `${process.env.BASE_URL}/articles/${id}/comments?limit=10`,
+  );
   const data: Comments = await res.json();
   return data;
 }

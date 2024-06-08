@@ -1,5 +1,5 @@
 import { useScreenDetector } from "@/shared/lib/hooks";
-import { Button } from "@/shared/ui/button";
+import { SubmitButton } from "@/shared/ui/button";
 import Image from "next/image";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -39,7 +39,7 @@ export default function Addboard() {
         <h2 className="flex-grow text-xl font-bold">
           {isDesktop ? "게시글 쓰기" : "상품 등록하기"}
         </h2>
-        <Button
+        <SubmitButton
           className="h-[42px] w-[74px]"
           value="등록"
           disabled={!isDirty || !isValid}
@@ -81,7 +81,7 @@ export default function Addboard() {
           >
             <figure className="flex h-[84px] w-[74px] flex-col items-center gap-3">
               <div className="relative h-12 w-12">
-                <Image fill src="/icons/plusButton.png" alt="plueButton" />
+                <Image fill src="/icons/plusButton.png" alt="plusButton" />
               </div>
               <p>이미지 등록</p>
             </figure>

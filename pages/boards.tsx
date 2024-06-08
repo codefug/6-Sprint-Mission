@@ -2,7 +2,7 @@ import { BestPostCard } from "@/entities/bestPostCard";
 import { PostCard } from "@/entities/postCard/ui/postCard";
 import { BASE_URL, SORT_OBJECT_KEY_TYPE } from "@/shared/constants/constants";
 import { Article, ArticleData } from "@/shared/model";
-import { Button } from "@/shared/ui/button";
+import { SubmitButton } from "@/shared/ui/button";
 import { Dropdown } from "@/widgets/DropDown";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
@@ -57,24 +57,25 @@ export default function BoardsPage({
         <header className="text-xl font-bold">베스트 게시글</header>
         <section className="grid h-[167px] grid-cols-1 gap-0 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-6">
           {likeList.map((item, index) => (
-            <article
-              key={item.id}
-              className={
-                index === 0
-                  ? "h-[167px]"
-                  : index === 1
-                    ? "hidden h-[167px] md:block"
-                    : "hidden h-[167px] lg:block"
-              }
-            >
-              <BestPostCard
-                createdAt={item.createdAt}
-                image={item.image}
-                likeCount={item.likeCount}
-                title={item.title}
-                nickname={item.writer.nickname}
-              />
-            </article>
+            <Link key={item.id} href={`/addboard/${item.id}`}>
+              <article
+                className={
+                  index === 0
+                    ? "h-[167px]"
+                    : index === 1
+                      ? "hidden h-[167px] md:block"
+                      : "hidden h-[167px] lg:block"
+                }
+              >
+                <BestPostCard
+                  createdAt={item.createdAt}
+                  image={item.image}
+                  likeCount={item.likeCount}
+                  title={item.title}
+                  nickname={item.writer.nickname}
+                />
+              </article>
+            </Link>
           ))}
         </section>
       </article>
@@ -82,7 +83,7 @@ export default function BoardsPage({
         <header className="flex items-center justify-between text-xl font-bold">
           게시글
           <Link href="/addboard" className="text-base">
-            <Button className="h-[42px] w-[88px]" value="글쓰기" />
+            <SubmitButton className="h-[42px] w-[88px]" value="글쓰기" />
           </Link>
         </header>
         <section className="mb-6 mt-4 flex items-center gap-2 md:mt-6 md:gap-4">
