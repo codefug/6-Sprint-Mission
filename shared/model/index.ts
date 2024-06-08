@@ -22,3 +22,18 @@ export interface GetArticleProps {
   orderBy?: string;
   keyword?: string;
 }
+
+export type Comments = {
+  nextCursor: number;
+  list: {
+    writer: {
+      image: string;
+      nickname: string;
+      id: number;
+    };
+    updatedAt: string;
+    createdAt: string;
+    content: string;
+    id: number;
+  }[];
+};

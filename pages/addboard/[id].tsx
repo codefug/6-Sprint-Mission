@@ -1,20 +1,40 @@
-import { Article } from "@/shared/model";
+import { CommentsCard } from "@/entities/commentsCard/ui/commentsCard";
+import { getArticleWithId, getCommentWithId } from "@/shared/api";
+import { Article, Comments } from "@/shared/model";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.query;
-  const res = await fetch(`${process.env.BASE_URL}/articles/${id}`);
-  const data: Article = await res.json();
-  return { props: { data } };
-}) satisfies GetServerSideProps<{ data: Article }>;
+
+  if (typeof id !== "string") {
+    return { notFound: true };
+  }
+
+  const articles = await getArticleWithId(id as unknown as string);
+  const comments = await getCommentWithId(id as unknown as string);
+  return { props: { articles, comments } };
+}) satisfies GetServerSideProps<{ articles: Article; comments: Comments }>;
 
 export default function AddboardId({
-  data,
+  articles,
+  comments,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
-      <div>{data.image}</div>
-      <div>{data.title}</div>
+      <div>{articles.content}</div>
+      {comments.list ? (
+        comments.list.map((comment) => (
+          <CommentsCard
+            key={comment.id}
+            content={comment.content}
+            createdAt={comment.createdAt}
+            nickname={comment.writer.nickname}
+            image={comment.writer.image}
+          />
+        ))
+      ) : (
+        <div>댓글 없움</div>
+      )}
     </>
   );
 }
