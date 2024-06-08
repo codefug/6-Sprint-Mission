@@ -102,14 +102,15 @@ export default function BoardsPage({
             <div>로딩중입니다.</div>
           ) : (
             article.map((item) => (
-              <PostCard
-                key={item.id}
-                createdAt={item.createdAt}
-                image={item.image}
-                likeCount={item.likeCount}
-                nickname={item.writer.nickname}
-                title={item.title}
-              />
+              <Link key={item.id} href={`/addboard/${item.id}`}>
+                <PostCard
+                  createdAt={item.createdAt}
+                  image={item.image}
+                  likeCount={item.likeCount}
+                  nickname={item.writer.nickname}
+                  title={item.title}
+                />
+              </Link>
             ))
           )}
         </section>

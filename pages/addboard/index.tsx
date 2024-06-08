@@ -1,6 +1,7 @@
 import { useScreenDetector } from "@/shared/lib/hooks";
 import { Button } from "@/shared/ui/button";
 import Image from "next/image";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface IFormInput {
@@ -12,21 +13,37 @@ interface IFormInput {
 export default function Addboard() {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
     handleSubmit,
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (d) => {
-    alert(JSON.stringify({ ...d, image: d.image?.[0] }));
+    alert(JSON.stringify({ ...d, image: d.image?.[0] }) + { preview });
   };
   const { isDesktop } = useScreenDetector();
+  const [preview, setPreview] = useState("");
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files?.[0];
+      const data = URL.createObjectURL(file);
+      setPreview(data);
+    }
+  };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="mb-[410px] flex flex-col gap-6 lg:mb-[153px]"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <header className="mb-6 mt-4 flex items-center lg:mt-6">
         <h2 className="flex-grow text-xl font-bold">
           {isDesktop ? "게시글 쓰기" : "상품 등록하기"}
         </h2>
-        <Button className="h-[42px] w-[74px]" value="등록" />
+        <Button
+          className="h-[42px] w-[74px]"
+          value="등록"
+          disabled={!isDirty || !isValid}
+        />
       </header>
       <section className="flex flex-col gap-3 font-bold">
         <h2 className="text-sm md:text-lg">*제목</h2>
@@ -57,23 +74,30 @@ export default function Addboard() {
       </section>
       <section className="flex flex-col gap-3 font-bold">
         <h2 className="text-sm md:text-lg">이미지</h2>
-        <label
-          htmlFor="image"
-          className="flex h-[168px] w-[168px] cursor-pointer items-center justify-center bg-[#f3f4f6] text-[#9CA3AF] md:h-[162px] md:w-[162px] lg:h-[282px] lg:w-[282px]"
-        >
-          <figure className="flex h-[84px] w-[74px] flex-col items-center gap-3">
-            <div className="relative h-12 w-12">
-              <Image fill src="/icons/plusButton.png" alt="plueButton" />
+        <figure className="flex gap-3">
+          <label
+            htmlFor="image"
+            className="flex h-[168px] w-[168px] cursor-pointer items-center justify-center bg-[#f3f4f6] text-[#9CA3AF] md:h-[162px] md:w-[162px] lg:h-[282px] lg:w-[282px]"
+          >
+            <figure className="flex h-[84px] w-[74px] flex-col items-center gap-3">
+              <div className="relative h-12 w-12">
+                <Image fill src="/icons/plusButton.png" alt="plueButton" />
+              </div>
+              <p>이미지 등록</p>
+            </figure>
+          </label>
+          <input
+            id="image"
+            type="file"
+            className="hidden"
+            onChange={handleUpload}
+          />
+          {preview && (
+            <div className="relative h-[168px] w-[168px] md:h-[162px] md:w-[162px] lg:h-[282px] lg:w-[282px]">
+              <Image fill src={preview} alt={preview} />
             </div>
-            <p>이미지 등록</p>
-          </figure>
-        </label>
-        <input
-          id="image"
-          type="file"
-          className="hidden"
-          {...register("image")}
-        />
+          )}
+        </figure>
       </section>
     </form>
   );
