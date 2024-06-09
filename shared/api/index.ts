@@ -53,13 +53,16 @@ export async function postArticle(data: PostArticle) {
 }
 
 async function postImage(imageUrl: string) {
+  let formData = new FormData();
+  formData.append("image", imageUrl);
   try {
     const Credential = getCookie("accessToken");
     const response = await fetch(`${BASE_URL}/images/upload`, {
       method: "POST",
-      body: JSON.stringify({ url: imageUrl }),
+      body: JSON.stringify(formData),
       headers: {
         Authorization: `Bearer ${Credential}`,
+        "Content-Type": "multipart/form-data",
       },
     });
     const data = await response.json();
