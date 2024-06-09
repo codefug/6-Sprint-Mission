@@ -1,3 +1,4 @@
+import { postArticle } from "@/shared/api";
 import { useScreenDetector } from "@/shared/lib/hooks";
 import { SubmitButton } from "@/shared/ui/button";
 import Image from "next/image";
@@ -17,7 +18,8 @@ export default function Addboard() {
     handleSubmit,
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (d) => {
-    alert(JSON.stringify({ ...d, image: d.image?.[0] }) + { preview });
+    console.log({ ...d, image: preview });
+    postArticle({ ...d, image: preview });
   };
   const { isDesktop } = useScreenDetector();
   const [preview, setPreview] = useState("");

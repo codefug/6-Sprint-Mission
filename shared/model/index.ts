@@ -37,3 +37,16 @@ export type Comments = {
     id: number;
   }[];
 };
+
+export type UserData = {
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    id: number;
+    email: string;
+    image: null | string;
+    nickname: string;
+    updatedAt: string;
+    createdAt: string;
+  };
+};
