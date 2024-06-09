@@ -4,6 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { compareDateWithNow } from "@/shared/lib/formatDate";
 import Image from "next/image";
 
 interface Props {
@@ -17,7 +18,7 @@ export function CommentsCard({ createdAt, nickname, content, image }: Props) {
   return (
     <section>
       <header className="mt-6 flex justify-between">
-        <div>{content}</div>
+        <div className="text-sm text-[#1f2937]">{content}</div>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Image
@@ -44,9 +45,9 @@ export function CommentsCard({ createdAt, nickname, content, image }: Props) {
           src={image ?? "/icons/profileIcon.png"}
           alt="comments profile"
         />
-        <section>
+        <section className="text-xs">
           <p>{nickname}</p>
-          <p>{createdAt}</p>
+          <p>{compareDateWithNow(new Date(createdAt)) + " 전"}</p>
         </section>
       </figure>
     </section>
