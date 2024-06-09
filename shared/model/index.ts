@@ -24,7 +24,7 @@ export interface GetArticleProps {
 }
 
 export type Comments = {
-  nextCursor: number;
+  nextCursor: number | null;
   list: {
     writer: {
       image: string | null;

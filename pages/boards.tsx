@@ -63,6 +63,7 @@ export default function BoardsPage({
   useEffect(
     function changeOption() {
       getArticle(orderBy, keyword, 10);
+      setPageSize(10);
     },
     [orderBy, keyword],
   );

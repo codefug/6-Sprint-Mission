@@ -6,12 +6,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CommentsCard } from "@/entities/commentsCard/ui/commentsCard";
 import { getArticleWithId, getCommentWithId } from "@/shared/api";
+import { BASE_URL } from "@/shared/constants/constants";
 import { formatDate } from "@/shared/lib/formatDate";
 import { Article, Comments } from "@/shared/model";
 import { Button, SubmitButton } from "@/shared/ui/button";
+import { IntersectionArea } from "@/shared/ui/IntersectionArea";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useCallback, useState } from "react";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.query;
@@ -21,7 +25,7 @@ export const getServerSideProps = (async (context) => {
   }
 
   const articles = await getArticleWithId(id as unknown as string);
-  const comments = await getCommentWithId(id as unknown as string);
+  const comments = await getCommentWithId(id as unknown as string, 0);
   return { props: { articles, comments } };
 }) satisfies GetServerSideProps<{ articles: Article; comments: Comments }>;
 
@@ -29,7 +33,19 @@ export default function AddboardId({
   articles,
   comments,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(comments);
+  const [cursor, setCursor] = useState<number | null>(comments.nextCursor);
+  const [commentList, setCommentList] = useState(comments.list);
+  const router = useRouter();
+  const handleImpression = useCallback(() => {
+    (async () => {
+      const response = await fetch(
+        `${BASE_URL}/articles/${router.query.id}/comments?limit=10${cursor !== null ? `&&cursor=${cursor}` : ""}`,
+      );
+      const comments: Comments = await response.json();
+      setCommentList(comments.list);
+      setCursor(comments.nextCursor);
+    })();
+  }, [cursor, router]);
   return (
     <>
       <header className="mb-4 mt-6 border-b border-[#E5E7EB]">
@@ -87,9 +103,9 @@ export default function AddboardId({
         />
         <SubmitButton value="등록" className="ml-auto mt-4 px-[23px] py-3" />
       </form>
-      {comments.list.length > 0 ? (
+      {commentList.length > 0 ? (
         <ul className="flex flex-col">
-          {comments.list.map((comment) => (
+          {commentList.map((comment) => (
             <CommentsCard
               key={comment.id}
               content={comment.content}
@@ -98,6 +114,11 @@ export default function AddboardId({
               image={comment.writer.image}
             />
           ))}
+          {cursor !== null && (
+            <IntersectionArea onImpression={handleImpression}>
+              <div>더보기</div>
+            </IntersectionArea>
+          )}
         </ul>
       ) : (
         <section className="flex flex-col items-center">
