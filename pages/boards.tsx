@@ -3,11 +3,12 @@ import { PostCard } from "@/entities/postCard/ui/postCard";
 import { BASE_URL, SORT_OBJECT_KEY_TYPE } from "@/shared/constants/constants";
 import { Article, ArticleData } from "@/shared/model";
 import { SubmitButton } from "@/shared/ui/button";
+import { IntersectionArea } from "@/shared/ui/IntersectionArea";
 import { Dropdown } from "@/widgets/DropDown";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const getStaticProps = (async () => {
   const likeRes = await fetch(`${BASE_URL}/articles?pageSize=3&&orderBy=like`);
@@ -21,17 +22,27 @@ export const getStaticProps = (async () => {
 export default function BoardsPage({
   likeList,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [article, setArticle] = useState<Article[]>([]);
-  const [sort, setSort] = useState<SORT_OBJECT_KEY_TYPE>("recent");
+  const [article, setArticle] = useState<ArticleData | null>(null);
+  const [orderBy, setOrderBy] = useState<SORT_OBJECT_KEY_TYPE>("recent");
   const [isLoading, setLoading] = useState(true);
   const searchRef = useRef<HTMLInputElement>(null);
   const [keyword, setKeyword] = useState("");
+  const [pageSize, setPageSize] = useState(10);
 
-  function getArticle(sort: SORT_OBJECT_KEY_TYPE, keyword: string) {
-    fetch(`${BASE_URL}/articles?orderBy=${sort}&&keyword=${keyword}`)
+  function getArticle(
+    orderBy: SORT_OBJECT_KEY_TYPE,
+    keyword: string,
+    pageSize: number,
+  ) {
+    const query = new URLSearchParams({
+      orderBy,
+      keyword,
+      pageSize: pageSize.toString(),
+    });
+    fetch(`${BASE_URL}/articles?${query.toString()}`)
       .then((res) => res.json())
       .then((data) => {
-        setArticle(data.list ?? []);
+        setArticle(data ?? null);
         setLoading(false);
       })
       .catch((e: Error) => {
@@ -39,14 +50,22 @@ export default function BoardsPage({
       });
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInpression = useCallback(() => {
+    getArticle(orderBy, keyword, pageSize + 10);
+    setPageSize(() => pageSize + 10);
+  }, [keyword, orderBy, pageSize]);
+
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (searchRef.current) setKeyword(searchRef.current.value);
-  };
+  }, []);
 
-  useEffect(() => {
-    getArticle(sort, keyword);
-  }, [sort, keyword]);
+  useEffect(
+    function changeOption() {
+      getArticle(orderBy, keyword, 10);
+    },
+    [orderBy, keyword],
+  );
 
   return (
     <div>
@@ -96,23 +115,31 @@ export default function BoardsPage({
               className="h-[42px] flex-grow rounded-xl bg-[#f3f4f6] bg-input-placeholder bg-[16px] bg-no-repeat py-2 pl-11 pr-3"
             />
           </form>
-          <Dropdown setValue={setSort} value={sort} />
+          <Dropdown setValue={setOrderBy} value={orderBy} />
         </section>
         <section>
           {isLoading ? (
             <div>로딩중입니다.</div>
           ) : (
-            article.map((item) => (
-              <Link key={item.id} href={`/addboard/${item.id}`}>
-                <PostCard
-                  createdAt={item.createdAt}
-                  image={item.image}
-                  likeCount={item.likeCount}
-                  nickname={item.writer.nickname}
-                  title={item.title}
-                />
-              </Link>
-            ))
+            <>
+              {article?.list.map((item) => (
+                <Link key={item.id} href={`/addboard/${item.id}`}>
+                  <PostCard
+                    createdAt={item.createdAt}
+                    image={item.image}
+                    likeCount={item.likeCount}
+                    nickname={item.writer.nickname}
+                    title={item.title}
+                  />
+                </Link>
+              ))}
+              {article?.totalCount !== undefined &&
+                article?.totalCount >= pageSize && (
+                  <IntersectionArea onImpression={handleInpression}>
+                    <div>더보기</div>
+                  </IntersectionArea>
+                )}
+            </>
           )}
         </section>
       </article>
