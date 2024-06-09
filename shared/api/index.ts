@@ -25,7 +25,7 @@ export async function getCommentWithId(id: string, cursor: number | null) {
 }
 
 type PostArticle = {
-  image?: string;
+  image?: string | null;
   content: string;
   title: string;
 };
@@ -34,15 +34,19 @@ export async function postArticle(data: PostArticle) {
   try {
     const Credential = getCookie("accessToken");
     let { image, content, title } = data;
+    let postData;
     if (!Credential) return;
     if (image) {
-      console.log(image);
       image = await postImage(image);
+      postData = { content, title, image };
+    } else {
+      postData = { content, title };
     }
     const response = await fetch(`${BASE_URL}/articles`, {
       method: "POST",
-      body: JSON.stringify({ image, content, title }),
+      body: JSON.stringify(postData),
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${Credential}`,
       },
     });
@@ -65,9 +69,11 @@ async function postImage(imageUrl: string) {
         "Content-Type": "multipart/form-data",
       },
     });
-    const data = await response.json();
-    console.log(data);
-    return data;
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+    return null;
   } catch (err) {
     throw new Error();
   }
