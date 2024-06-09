@@ -1,10 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import localFont from "next/font/local";
+import { LoginIcon } from "@/shared/ui/withLoginComponent";
+import { getCookie } from "@/shared/lib/login";
+import { useEffect, useState } from "react";
 
 const rokafSans = localFont({ src: "./ROKAF Sans Bold.ttf" });
 
 export function Header() {
+  const [isLogin, setIsLogin] = useState(false);
+  useEffect(() => {
+    setIsLogin(!!getCookie("accessToken"));
+  }, []);
   return (
     <header className="border-b-[1px] border-b-gray px-4 md:px-6">
       <section className="mx-auto flex h-[70px] max-w-[1520px] items-center justify-between">
@@ -37,13 +44,7 @@ export function Header() {
           </nav>
         </section>
         <section>
-          <Image
-            src="/icons/profileIcon.png"
-            alt="profile image"
-            width={40}
-            height={40}
-            className="hover:cursor-pointer"
-          />
+          <LoginIcon loginRequired={!isLogin} />
         </section>
       </section>
     </header>
