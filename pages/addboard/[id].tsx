@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CommentsCard } from "@/entities/commentsCard/ui/commentsCard";
-import { getArticleWithId, getCommentWithId } from "@/shared/api";
+import { getArticleWithId, getCommentWithId, postComment } from "@/shared/api";
 import { BASE_URL } from "@/shared/constants/constants";
 import { formatDate } from "@/shared/lib/formatDate";
 import { Article, Comments } from "@/shared/model";
@@ -15,7 +15,7 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.query;
@@ -36,16 +36,33 @@ export default function AddboardId({
   const [cursor, setCursor] = useState<number | null>(comments.nextCursor);
   const [commentList, setCommentList] = useState(comments.list);
   const router = useRouter();
+  const userCommentRef = useRef<HTMLTextAreaElement>(null);
   const handleImpression = useCallback(() => {
     (async () => {
       const response = await fetch(
         `${BASE_URL}/articles/${router.query.id}/comments?limit=10${cursor !== null ? `&&cursor=${cursor}` : ""}`,
       );
       const comments: Comments = await response.json();
-      setCommentList(comments.list);
+      setCommentList((prev) => [...prev, ...comments.list]);
       setCursor(comments.nextCursor);
     })();
   }, [cursor, router]);
+
+  const handleSubmit = useCallback(
+    (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      (async () => {
+        if (userCommentRef.current == null) return;
+        const data: Comments["list"][0] = await postComment(
+          router.query.id as string,
+          userCommentRef.current.value,
+        );
+        userCommentRef.current.value = "";
+        setCommentList((prev) => [data, ...prev]);
+      })();
+    },
+    [router.query.id],
+  );
   return (
     <>
       <header className="mb-4 mt-6 border-b border-[#E5E7EB]">
@@ -95,11 +112,13 @@ export default function AddboardId({
         </div>
       </header>
       <section>{articles.content}</section>
-      <form className="mt-16">
+      <form className="mt-16" onSubmit={handleSubmit}>
         <h2 className="text-base font-semibold">댓글 달기</h2>
         <textarea
+          name="content"
           className="mt-4 h-[104px] w-full resize-none rounded-xl bg-[#f3f4f6] px-6 py-4"
           placeholder="댓글을 입력해주세요"
+          ref={userCommentRef}
         />
         <SubmitButton value="등록" className="ml-auto mt-4 px-[23px] py-3" />
       </form>
