@@ -18,7 +18,6 @@ export default function Addboard() {
     handleSubmit,
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (d) => {
-    console.log({ ...d, image: preview });
     postArticle({ ...d, image: preview });
   };
   const { isDesktop } = useScreenDetector();

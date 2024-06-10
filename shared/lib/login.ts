@@ -3,9 +3,10 @@ type Options = {
   path?: string;
   domain?: string;
   secure?: boolean;
+  "max-age"?: number;
 };
 
-export function setCookie(name: string, value: string, options: Options) {
+export function setCookie(name: string, value: string, options?: Options) {
   options = {
     path: "/",
     ...options,

@@ -2,16 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import localFont from "next/font/local";
 import { LoginIcon } from "@/shared/ui/withLoginComponent";
-import { getCookie } from "@/shared/lib/login";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { LoginContext } from "@/pages/_app";
 
 const rokafSans = localFont({ src: "./ROKAF Sans Bold.ttf" });
 
 export function Header() {
-  const [isLogin, setIsLogin] = useState(false);
-  useEffect(() => {
-    setIsLogin(!!getCookie("accessToken"));
-  }, []);
+  const theme = useContext(LoginContext);
   return (
     <header className="border-b-[1px] border-b-gray px-4 md:px-6">
       <section className="mx-auto flex h-[70px] max-w-[1520px] items-center justify-between">
@@ -44,7 +41,7 @@ export function Header() {
           </nav>
         </section>
         <section>
-          <LoginIcon loginRequired={!isLogin} />
+          <LoginIcon loginRequired={!theme?.isLogin} />
         </section>
       </section>
     </header>

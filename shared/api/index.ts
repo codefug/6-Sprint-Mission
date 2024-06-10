@@ -1,6 +1,6 @@
 import { Article, Comments, UserData } from "../model";
 import { BASE_URL } from "../constants/constants";
-import { getCookie } from "../lib/login";
+import { getCookie, setCookie } from "../lib/login";
 
 export async function getArticleWithId(id: string) {
   try {
@@ -32,6 +32,11 @@ type PostArticle = {
 
 export async function postArticle(data: PostArticle) {
   try {
+    const refreshToken = getCookie("refreshToken");
+    if (!refreshToken) return;
+    if (!getCookie("accessToken")) {
+      await postRefreshToken(refreshToken);
+    }
     const Credential = getCookie("accessToken");
     let { image, content, title } = data;
     let postData;
@@ -60,6 +65,11 @@ async function postImage(imageUrl: string) {
   let formData = new FormData();
   formData.append("image", imageUrl);
   try {
+    const refreshToken = getCookie("refreshToken");
+    if (!refreshToken) return;
+    if (!getCookie("accessToken")) {
+      await postRefreshToken(refreshToken);
+    }
     const Credential = getCookie("accessToken");
     const response = await fetch(`${BASE_URL}/images/upload`, {
       method: "POST",
@@ -92,8 +102,53 @@ export async function getToken() {
       }),
     });
     const data: UserData = await response.json();
-    console.log(data);
     return data;
+  } catch (err) {
+    throw new Error();
+  }
+}
+
+export async function postComment(id: string, content: string) {
+  try {
+    const refreshToken = getCookie("refreshToken");
+    if (!refreshToken) return;
+    if (!getCookie("accessToken")) {
+      await postRefreshToken(refreshToken);
+    }
+    const Credential = getCookie("accessToken") as string;
+    const response = await fetch(`${BASE_URL}/articles/${id}/comments`, {
+      method: "POST",
+      body: JSON.stringify({ content }),
+      headers: {
+        Authorization: `Bearer ${Credential}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+    return null;
+  } catch (err) {
+    throw new Error();
+  }
+}
+
+async function postRefreshToken(refreshToken: string) {
+  try {
+    const response = await fetch(`${BASE_URL}/auth/refresh-token`, {
+      method: "POST",
+      body: JSON.stringify({ refreshToken }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const data: { accessToken: string } = await response.json();
+      setCookie("accessToken", data.accessToken, { "max-age": 3600 });
+      return data;
+    }
+    return null;
   } catch (err) {
     throw new Error();
   }
