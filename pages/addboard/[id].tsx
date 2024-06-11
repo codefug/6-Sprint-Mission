@@ -11,6 +11,7 @@ import { formatDate } from "@/shared/lib/formatDate";
 import { Article, Comments } from "@/shared/model";
 import { Button, SubmitButton } from "@/shared/ui/button";
 import { IntersectionArea } from "@/shared/ui/IntersectionArea";
+import { LikeCount } from "@/shared/ui/LikeCount";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,6 +38,7 @@ export default function AddboardId({
   const [commentList, setCommentList] = useState(comments.list);
   const router = useRouter();
   const userCommentRef = useRef<HTMLTextAreaElement>(null);
+
   const handleImpression = useCallback(() => {
     (async () => {
       const response = await fetch(
@@ -63,6 +65,7 @@ export default function AddboardId({
     },
     [router.query.id],
   );
+
   return (
     <>
       <header className="mb-4 mt-6 border-b border-[#E5E7EB]">
@@ -100,15 +103,13 @@ export default function AddboardId({
               {formatDate(new Date(articles.createdAt))}
             </p>
           </figure>
-          <figure className="flex gap-1 pl-4">
-            <Image
-              width={24}
-              height={24}
-              src="/icons/heart.png"
-              alt="heartIcon"
-            />
-            <p className="text-[#6B7280]">{articles.likeCount}</p>
-          </figure>
+          <LikeCount
+            height={24}
+            className="flex gap-1 pl-4"
+            id={articles.id}
+            likeCount={articles.likeCount}
+            width={24}
+          />
         </div>
       </header>
       <section>{articles.content}</section>

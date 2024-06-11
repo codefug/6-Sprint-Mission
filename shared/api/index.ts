@@ -157,3 +157,27 @@ async function postRefreshToken(refreshToken: string) {
     throw new Error();
   }
 }
+
+export async function postArticleLike(id: number) {
+  try {
+    const refreshToken = getCookie("refreshToken");
+    if (!refreshToken) return;
+    if (!getCookie("accessToken")) {
+      await postRefreshToken(refreshToken);
+    }
+    const Credential = getCookie("accessToken");
+    if (!Credential) return;
+
+    const response = await fetch(`${BASE_URL}/articles/${id}/like`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Credential}`,
+      },
+    });
+    if (response.ok) return response.status;
+    else return response.status;
+  } catch (err) {
+    return;
+  }
+}

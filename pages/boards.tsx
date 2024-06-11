@@ -50,7 +50,7 @@ export default function BoardsPage({
       });
   }
 
-  const handleInpression = useCallback(() => {
+  const handleImpression = useCallback(() => {
     getArticle(orderBy, keyword, pageSize + 10);
     setPageSize(() => pageSize + 10);
   }, [keyword, orderBy, pageSize]);
@@ -93,6 +93,7 @@ export default function BoardsPage({
                   likeCount={item.likeCount}
                   title={item.title}
                   nickname={item.writer.nickname}
+                  id={item.id}
                 />
               </article>
             </Link>
@@ -131,12 +132,13 @@ export default function BoardsPage({
                     likeCount={item.likeCount}
                     nickname={item.writer.nickname}
                     title={item.title}
+                    id={item.id}
                   />
                 </Link>
               ))}
               {article?.totalCount !== undefined &&
                 article?.totalCount >= pageSize && (
-                  <IntersectionArea onImpression={handleInpression}>
+                  <IntersectionArea onImpression={handleImpression}>
                     <div>더보기</div>
                   </IntersectionArea>
                 )}

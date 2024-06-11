@@ -1,5 +1,6 @@
 import { formatDate } from "@/shared/lib/formatDate";
 import { ItemImage } from "@/shared/ui/itemImage";
+import { LikeCount } from "@/shared/ui/LikeCount";
 import Image from "next/image";
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
   nickname: string;
   likeCount: number;
   createdAt: string;
+  id: number;
 }
 
 export function BestPostCard({
@@ -16,6 +18,7 @@ export function BestPostCard({
   nickname,
   likeCount,
   createdAt,
+  id,
 }: Props) {
   return (
     <section className="relative h-full rounded-lg bg-[#f9fafb] px-6 pb-4">
@@ -42,17 +45,13 @@ export function BestPostCard({
       <footer className="mt-4 flex justify-between text-sm">
         <header className="flex items-center gap-2 font-normal text-[#4b5563]">
           {nickname}
-          <figure className="flex items-center gap-1">
-            <button type="button">
-              <Image
-                src="/icons/heart.png"
-                alt="heart icon"
-                width={16}
-                height={16}
-              />
-            </button>
-            <div className="text-[#9ca3af]">{likeCount}</div>
-          </figure>
+          <LikeCount
+            className="flex items-center gap-1"
+            height={16}
+            id={id}
+            likeCount={likeCount}
+            width={16}
+          />
         </header>
         <footer className="text-[#9ca3af]">
           {formatDate(new Date(createdAt))}
