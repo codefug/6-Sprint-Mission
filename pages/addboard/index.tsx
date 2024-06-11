@@ -2,13 +2,14 @@ import { postArticle } from "@/shared/api";
 import { useScreenDetector } from "@/shared/lib/hooks";
 import { SubmitButton } from "@/shared/ui/button";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface IFormInput {
   title: string;
   content: string;
-  image: string;
+  image?: File;
 }
 
 export default function Addboard() {
@@ -17,15 +18,18 @@ export default function Addboard() {
     formState: { errors, isDirty, isValid },
     handleSubmit,
   } = useForm<IFormInput>();
+  const router = useRouter();
   const onSubmit: SubmitHandler<IFormInput> = (d) => {
-    postArticle({ ...d, image: preview });
+    postArticle(image !== null ? { ...d, image } : { ...d });
+    router.push("/boards");
   };
   const { isDesktop } = useScreenDetector();
   const [preview, setPreview] = useState("");
-
+  const [image, setImage] = useState<File | null>(null);
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files?.[0];
+      setImage(file);
       const data = URL.createObjectURL(file);
       setPreview(data);
     }

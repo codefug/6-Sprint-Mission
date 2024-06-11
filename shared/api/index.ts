@@ -25,7 +25,7 @@ export async function getCommentWithId(id: string, cursor: number | null) {
 }
 
 type PostArticle = {
-  image?: string | null;
+  image?: File;
   content: string;
   title: string;
 };
@@ -43,7 +43,11 @@ export async function postArticle(data: PostArticle) {
     if (!Credential) return;
     if (image) {
       image = await postImage(image);
-      postData = { content, title, image };
+      if (image == null) {
+        postData = { content, title };
+      } else {
+        postData = { content, title, image };
+      }
     } else {
       postData = { content, title };
     }
@@ -61,9 +65,9 @@ export async function postArticle(data: PostArticle) {
   }
 }
 
-async function postImage(imageUrl: string) {
+async function postImage(imageFile: File) {
   let formData = new FormData();
-  formData.append("image", imageUrl);
+  formData.append("image", imageFile);
   try {
     const refreshToken = getCookie("refreshToken");
     if (!refreshToken) return;
@@ -145,7 +149,7 @@ async function postRefreshToken(refreshToken: string) {
     });
     if (response.ok) {
       const data: { accessToken: string } = await response.json();
-      setCookie("accessToken", data.accessToken, { "max-age": 3600 });
+      setCookie("accessToken", data.accessToken, { "max-age": 1800 });
       return data;
     }
     return null;
