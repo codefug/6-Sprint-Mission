@@ -50,3 +50,7 @@ export type UserData = {
     createdAt: string;
   };
 };
+
+export type ImageUrlObject = {
+  url: string;
+};

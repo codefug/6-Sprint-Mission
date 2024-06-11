@@ -1,6 +1,7 @@
 import { Article, Comments, UserData } from "../model";
 import { BASE_URL } from "../constants/constants";
 import { getCookie, setCookie } from "../lib/login";
+import { ImageUrlObject } from "../model/index";
 
 export async function getArticleWithId(id: string) {
   try {
@@ -42,11 +43,11 @@ export async function postArticle(data: PostArticle) {
     let postData;
     if (!Credential) return;
     if (image) {
-      image = await postImage(image);
-      if (image == null) {
+      const data: ImageUrlObject = await postImage(image);
+      if (data == null) {
         postData = { content, title };
       } else {
-        postData = { content, title, image };
+        postData = { content, title, image: data.url };
       }
     } else {
       postData = { content, title };
@@ -65,7 +66,7 @@ export async function postArticle(data: PostArticle) {
   }
 }
 
-async function postImage(imageFile: File) {
+export async function postImage(imageFile: File) {
   let formData = new FormData();
   formData.append("image", imageFile);
   try {
@@ -77,10 +78,9 @@ async function postImage(imageFile: File) {
     const Credential = getCookie("accessToken");
     const response = await fetch(`${BASE_URL}/images/upload`, {
       method: "POST",
-      body: JSON.stringify(formData),
+      body: formData,
       headers: {
         Authorization: `Bearer ${Credential}`,
-        "Content-Type": "multipart/form-data",
       },
     });
     if (response.ok) {

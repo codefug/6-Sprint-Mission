@@ -1,4 +1,4 @@
-import { postArticle } from "@/shared/api";
+import { postArticle, postImage } from "@/shared/api";
 import { useScreenDetector } from "@/shared/lib/hooks";
 import { SubmitButton } from "@/shared/ui/button";
 import Image from "next/image";
