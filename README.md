@@ -37,3 +37,4 @@ https://panda-market-api.vercel.app/docs/#/
 2. zustand를 이용한 로그인 구현
 3. github action을 이용해서 vercel에 자동 배포
 4. premier-motion을 사용해서 랜딩 페이지에 애니메이션 추가
+5. lodash 사용
