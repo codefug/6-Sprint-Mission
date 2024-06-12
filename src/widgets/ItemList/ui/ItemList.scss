@@ -1,0 +1,22 @@
+.ItemList {
+  &__list {
+    display: grid;
+    grid-template: repeat(2, auto) / repeat(5, auto);
+  }
+}
+
+@media (width<=1199px) {
+  .ItemList {
+    &__list {
+      grid-template: repeat(2, auto) / repeat(3, auto);
+    }
+  }
+}
+
+@media (width<=767px) {
+  .ItemList {
+    &__list {
+      grid-template: repeat(2, auto) / repeat(2, auto);
+    }
+  }
+}

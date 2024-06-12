@@ -1,0 +1,18 @@
+.main {
+  margin-top: 94px;
+  &__content {
+    margin-inline: auto;
+    margin-bottom: 100px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+}
+@media (width<=766) {
+  .main {
+    &__content {
+      gap: 24px;
+    }
+  }
+}

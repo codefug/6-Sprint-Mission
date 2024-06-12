@@ -1,0 +1,33 @@
+.ItemInput {
+  background: #f3f4f6;
+  border-radius: 12px;
+  text-indent: 24px;
+  font-size: 16px;
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  &--big {
+    width: 100%;
+    height: 200px;
+    border: none;
+    resize: none;
+    padding-top: 16px;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  }
+  &--small {
+    width: 100%;
+    height: 56px;
+    border: none;
+  }
+  &__subtitle {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 21.48px;
+    text-align: left;
+  }
+}
+
+@media (width<=767px) {
+}

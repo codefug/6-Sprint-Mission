@@ -1,0 +1,24 @@
+.button {
+  border: none;
+  cursor: pointer;
+  &--small {
+    padding: 12px 23px;
+    border-radius: 8px;
+  }
+  &--blue {
+    background: #3692ff;
+    color: white;
+    &:hover {
+      background: #1967d6;
+    }
+    &:active {
+      background: #1251aa;
+    }
+    &:disabled {
+      background: #9ca3af;
+    }
+  }
+  &--margin-left {
+    margin-left: auto;
+  }
+}

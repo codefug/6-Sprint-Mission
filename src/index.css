@@ -1,0 +1,16 @@
+html {
+  font-size: 10px;
+  box-sizing: border-box;
+}
+
+@media (768px<=width<=1199px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media (375px<=width<=767px) {
+  html {
+    font-size: 6px;
+  }
+}

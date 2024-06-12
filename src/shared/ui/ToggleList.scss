@@ -1,0 +1,58 @@
+.ToggleList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 12px;
+  position: relative;
+  width: fit-content;
+  &:hover &__item {
+    display: flex;
+  }
+  &__default {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 42px;
+    border: 1px solid darkgray;
+    border-radius: 12px;
+  }
+  &__itemList {
+    position: absolute;
+    right: 0;
+    top: 40px;
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 42px;
+    display: none;
+    background-color: white;
+    &:hover {
+      background-color: darkgray;
+    }
+    &:first-of-type {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      border: 1px solid darkgray;
+    }
+    &:last-of-type {
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      border: 1px solid darkgray;
+    }
+  }
+}
+@media (375px<=width<=767px) {
+  .ToggleList {
+    font-size: 2rem;
+    &__default {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid darkgray;
+    }
+  }
+}

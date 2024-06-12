@@ -1,0 +1,48 @@
+.ItemList {
+  &__header--desktop {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr repeat(3, auto);
+    grid-template-areas: "title form link ToggleList";
+    align-items: center;
+  }
+  &__title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    letter-spacing: 0.02em;
+    text-align: left;
+  }
+  &__input {
+    width: 294px;
+    height: 42px;
+    border-radius: 12px;
+    border: none;
+    background-color: #f3f4f6;
+    background-image: url("../../../shared/asset/searchIcon.png");
+    background-repeat: no-repeat;
+    background-position: 10px;
+    text-indent: 30px;
+  }
+}
+
+@media (width<=767px) {
+  .flex-wrapper {
+    display: flex;
+    gap: 8px;
+  }
+  .ItemList {
+    &__form,
+    &__title {
+      flex: 1;
+    }
+    &__header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    &__input {
+      width: 100%;
+    }
+  }
+}

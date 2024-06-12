@@ -1,0 +1,12 @@
+.register {
+  &__inputList {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  &__Tags {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
