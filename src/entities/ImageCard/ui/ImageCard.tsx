@@ -2,7 +2,7 @@ import xIcon from "/src/shared/asset/xicon.png";
 
 import "./ImageCard.scss";
 
-export function ImageCard({ src, onClick, className }) {
+export function ImageCard({ src, onClick, className }: ImageCardProps) {
   return (
     <>
       <div className={className}>

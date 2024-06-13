@@ -5,8 +5,15 @@ import { FlexContainer } from "../../../shared/ui/Container";
 
 import KebabIcon from "../../../shared/asset/ic_kebab.png";
 import inquiryEmtpyImage from "../../../shared/asset/Img_inquiry_empty.png";
+import { SpecificCommentsData } from "@/shared/api/type";
 
-export const ProductCommentsSection = ({ comments }) => {
+interface ProductCommentsSectionProps {
+  comments: SpecificCommentsData["list"];
+}
+
+export const ProductCommentsSection = ({
+  comments,
+}: ProductCommentsSectionProps) => {
   return (
     <section>
       {comments.length > 0 ? (

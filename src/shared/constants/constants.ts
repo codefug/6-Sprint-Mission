@@ -1,11 +1,19 @@
+import { SpecificCommentsData, SpecificProductData } from "../api/type";
+
 export const INITIAL_VALUE = {
   isLoading: false,
   errorMessage: null,
+} as {
+  isLoading: boolean;
+  errorMessage: string | null;
 };
 
 export const INITIAL_PRODUCT_INFO = {
   info: null,
   comments: null,
+} as {
+  info: SpecificProductData | null;
+  comments: SpecificCommentsData | null;
 };
 
 export const PLACEHOLDER_LIST_FOR_REGISTER = [
@@ -41,6 +49,12 @@ export const FORM_DATA = {
   description: null,
   price: null,
   tags: null,
+} as {
+  title: string | null;
+  image: string | null;
+  description: string | null;
+  price: number | null;
+  tags: string | null;
 };
 
 export const INQUIRY_PLACEHOLDER =

@@ -18,7 +18,7 @@ export function RegisterPage() {
   const [tags, setTags] = useState([]);
   const [file, setFile] = useState(FORM_DATA);
 
-  const active =
+  const active: boolean =
     file.title &&
     file.description &&
     file.price &&

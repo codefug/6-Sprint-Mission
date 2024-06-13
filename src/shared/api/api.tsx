@@ -1,5 +1,12 @@
 import { BASE_URL } from "../constants/constants";
-import { GetCommentsProps, GetDatumProps, GetProductProps } from "./type";
+import {
+  GetCommentsProps,
+  GetDatumProps,
+  GetProductProps,
+  SpecificCommentsData,
+  SpecificProductData,
+  TotalProductsData,
+} from "./type";
 
 // 나중에 전부 axios로 바꾸기
 export async function getDatum({
@@ -20,7 +27,7 @@ export async function getDatum({
   if (!response.ok) {
     throw new Error("데이터를 불러오는데 실패했습니다.");
   }
-  const data = await response.json();
+  const data: TotalProductsData = await response.json();
   return data;
 }
 
@@ -29,7 +36,7 @@ export const getProduct = async ({ productId = null }: GetProductProps) => {
   if (!response.ok) {
     throw new Error(`${productId}의 데이터를 가져오지 못했습니다.`);
   }
-  const data = await response.json();
+  const data: SpecificProductData = await response.json();
   return data;
 };
 
@@ -43,6 +50,6 @@ export const getComments = async ({
   if (!response.ok) {
     throw new Error(`${productId}의 comments 데이터를 가져오지 못했습니다.`);
   }
-  const data = await response.json();
+  const data: SpecificCommentsData = await response.json();
   return data;
 };

@@ -4,6 +4,7 @@ import { FlexContainer, FlexItem } from "../../../shared/ui/Container";
 import { formatPrice } from "../../../shared/util/util";
 import { HeartButton } from "../../../shared/ui/Button";
 import { Line } from "../../../shared/ui/Line";
+import { SpecificProductData } from "@/shared/api/type";
 
 const NewFlexContainer = styled(FlexContainer)`
   @media (width<=767px) {
@@ -72,13 +73,17 @@ const NewFlexItem = styled(FlexItem)`
   justify-content: flex-end;
 `;
 
-export const ProductInfoSection = ({ info }) => {
+interface ProductInfoSectionProps {
+  info: SpecificProductData;
+}
+
+export const ProductInfoSection = ({ info }: ProductInfoSectionProps) => {
   const { favoriteCount, images, tags, name, description, price } = info;
   const hashtag = tags.map((v) => `#${v}`);
 
   return (
     <NewFlexContainer as="section" gap="16px" justify="center">
-      <ProductImage src={images} alt={name + "image"} />
+      <ProductImage src={images.join("")} alt={name + "image"} />
       <FlexContainer direction="column" gap="16px">
         <div>
           <ProductName>{name}</ProductName>

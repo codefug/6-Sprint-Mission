@@ -1,11 +1,12 @@
 import "./header.scss";
 import "/src/shared/style/link.scss";
 import logoUrl from "/src/shared/asset/headerLogo.png";
-import { Button } from "/src/shared/ui/Button";
+// import { Button } from "/src/shared/ui/Button";
 import { Link } from "react-router-dom";
 import loginUrl from "/src/shared/asset/login.png";
+import { Button } from "@/shared/ui/Button";
 
-export const Header = ({ isLogin, onLogin }) => {
+export const Header = ({ isLogin, onLogin }: HeaderProps) => {
   return (
     <header className="header">
       <div className="wrapper">
@@ -40,7 +41,6 @@ export const Header = ({ isLogin, onLogin }) => {
             classNames={["button--small", "button--blue", "button"]}
             onClick={() => {
               onLogin(true);
-              console.log(isLogin);
             }}
             value="로그인"
           />

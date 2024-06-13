@@ -15,36 +15,6 @@ import { Button } from "../../../shared/ui/Button";
 import { FlexContainer } from "../../../shared/ui/Container";
 import styled from "styled-components";
 import backIcon from "../../../shared/asset/ic_back.png";
-const HomeLink = styled(Link).attrs({ className: "styled" })`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  text-decoration: none;
-  width: 240px;
-  height: 48px;
-  padding: 12px 71px;
-  margin-top: 40px;
-  margin-inline: auto;
-  border-radius: 40px;
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 24px;
-  text-align: center;
-  background-color: #3692ff;
-`;
-
-const NewItemInput = styled(ItemInput)`
-  height: 104px;
-  padding: 16px 24px;
-  border-radius: 12px;
-  text-indent: 0px;
-  box-sizing: border-box;
-  @media (width<=767px) {
-    font-size: 14px;
-  }
-`;
 
 export const ProductPage = () => {
   const { productId } = useParams();
@@ -121,3 +91,34 @@ export const ProductPage = () => {
     </Main>
   );
 };
+
+const HomeLink = styled(Link).attrs({ className: "styled" })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  width: 240px;
+  height: 48px;
+  padding: 12px 71px;
+  margin-top: 40px;
+  margin-inline: auto;
+  border-radius: 40px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  background-color: #3692ff;
+`;
+
+const NewItemInput = styled(ItemInput)`
+  height: 104px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-indent: 0px;
+  box-sizing: border-box;
+  @media (width<=767px) {
+    font-size: 14px;
+  }
+`;

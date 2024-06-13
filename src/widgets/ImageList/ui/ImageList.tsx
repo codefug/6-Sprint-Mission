@@ -1,26 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-import { ImageCard } from "/src/entities/ImageCard";
 import icplus from "/src/shared/asset/ic_plus.png";
 
 import "./ImageList.scss";
+import { ImageCard } from "@/entities/ImageCard";
+import { ImageListProps } from "../type";
 
-export function ImageList({ onChange }) {
-  const [images, setImages] = useState([]);
+export function ImageList({ onChange }: ImageListProps) {
+  const [images, setImages] = useState<string[]>([]);
 
-  let fileRef = useRef(null);
+  let fileRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileSelect = () => {
-    if (!fileRef.current) {
+    if (fileRef?.current?.files == null) {
       return;
     }
     const newFile = Array.from(fileRef.current.files).map((v) =>
       URL.createObjectURL(v)
     );
-    setImages((prevImages) => [...prevImages, newFile]);
-    fileRef = null;
+    setImages((prevImages) => [...prevImages, ...newFile]);
   };
 
-  const handleDelete = (src) => {
+  const handleDelete = (src: string) => {
     setImages((prevImages) => prevImages.filter((v) => v !== src));
   };
 
