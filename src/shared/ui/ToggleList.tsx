@@ -2,6 +2,7 @@ import "./ToggleList.scss";
 import { useMediaQuery } from "react-responsive";
 import icSort from "../asset/ic_sort.png";
 import { useState } from "react";
+import { ToggleListProps } from "./type";
 
 /**
  * name과 callback들이 있는 객체들의 리스트를 받으면
@@ -9,12 +10,12 @@ import { useState } from "react";
  * @param {Array} options {String} name {String} callback
  * @returns ToggleList
  */
-export const ToggleList = ({ options }) => {
+export const ToggleList = ({ options }: ToggleListProps) => {
   const isMobile = useMediaQuery({ minWidth: 375, maxWidth: 767 });
   const [selectedOption, setSelectedOption] = useState("최신순");
 
-  const changeDefault = (e) => {
-    setSelectedOption(e.target.innerText);
+  const changeDefault = (value: string) => {
+    setSelectedOption(value);
   };
 
   return (
@@ -28,12 +29,12 @@ export const ToggleList = ({ options }) => {
             <div
               key={index}
               className="ToggleList__item"
-              onClick={(e) => {
+              onClick={() => {
                 option.callback();
-                changeDefault(e);
+                changeDefault(option.name);
               }}
             >
-              <span>{option.name}</span>
+              {option.name}
             </div>
           );
         })}

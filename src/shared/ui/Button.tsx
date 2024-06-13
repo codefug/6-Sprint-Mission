@@ -2,6 +2,7 @@ import styled from "styled-components";
 import "./Button.scss";
 import Heart from "../asset/IconHeart.png";
 import { FlexContainer } from "./Container";
+import { ButtonProps } from "./type";
 
 /**
  * props의 classNames이라는 Array 안에 className들을 넣으면 해당 css가 작동한다.
@@ -9,7 +10,12 @@ import { FlexContainer } from "./Container";
  * @param {Object}{string} value
  * @returns blueButton
  */
-export const Button = ({ classNames, value, active = true, onClick }) => {
+export const Button = ({
+  classNames,
+  value,
+  active = true,
+  onClick,
+}: ButtonProps) => {
   return (
     <button
       disabled={!active}
@@ -49,7 +55,7 @@ const NewFlexContainer = styled(FlexContainer)`
   }
 `;
 
-export const HeartButton = ({ children }) => {
+export const HeartButton = ({ children }: React.PropsWithChildren) => {
   return (
     <NewFlexContainer as="button" type="button" align="center" gap="4px">
       <HeartIcon src={Heart} />

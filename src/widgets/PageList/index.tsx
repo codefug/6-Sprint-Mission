@@ -1,1 +1,1 @@
-export { PageList } from "./ui/PageList.jsx";
+export { PageList } from "./ui/PageList.tsx";

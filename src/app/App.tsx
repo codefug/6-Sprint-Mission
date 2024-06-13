@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import { Outlet } from "react-router-dom";
 import { Header } from "@/widgets/header";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);

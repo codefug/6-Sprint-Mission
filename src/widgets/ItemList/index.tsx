@@ -1,1 +1,1 @@
-export { ItemList } from "./ui/ItemList.jsx";
+export { ItemList } from "./ui/ItemList.js";

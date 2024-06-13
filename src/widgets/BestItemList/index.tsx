@@ -1,1 +1,1 @@
-export { BestItemList } from "./ui/BestItemList.jsx";
+export { BestItemList } from "./ui/BestItemList.js";

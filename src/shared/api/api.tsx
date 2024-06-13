@@ -1,12 +1,19 @@
 import { BASE_URL } from "../constants/constants";
+import { GetCommentsProps, GetDatumProps, GetProductProps } from "./type";
 
+// 나중에 전부 axios로 바꾸기
 export async function getDatum({
   page = 1,
   pageSize = 10,
   orderBy = "recent",
   keyword = "",
-}) {
-  let searchParams = new URLSearchParams({ page, pageSize, orderBy, keyword });
+}: GetDatumProps) {
+  const searchParams = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+    orderBy,
+    keyword,
+  });
   const response = await fetch(
     `${BASE_URL}/products?${searchParams.toString()}`
   );
@@ -17,7 +24,7 @@ export async function getDatum({
   return data;
 }
 
-export const getProduct = async ({ productId = null }) => {
+export const getProduct = async ({ productId = null }: GetProductProps) => {
   const response = await fetch(`${BASE_URL}/products/${productId}`);
   if (!response.ok) {
     throw new Error(`${productId}의 데이터를 가져오지 못했습니다.`);
@@ -26,7 +33,10 @@ export const getProduct = async ({ productId = null }) => {
   return data;
 };
 
-export const getComments = async ({ productId = null, limit }) => {
+export const getComments = async ({
+  productId = null,
+  limit,
+}: GetCommentsProps) => {
   const response = await fetch(
     `${BASE_URL}/products/${productId}/comments?limit=${limit}`
   );

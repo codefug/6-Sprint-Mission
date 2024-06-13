@@ -1,6 +1,6 @@
-import { useCustomMediaQuery } from "/src/shared/hooks/useCustomMediaQuery.jsx";
-import { Button } from "/src/shared/ui/Button.jsx";
-import { ToggleList } from "/src/shared/ui/ToggleList.jsx";
+import { useCustomMediaQuery } from "/src/shared/hooks/useCustomMediaQuery.ts";
+import { Button } from "/src/shared/ui/Button.tsx";
+import { ToggleList } from "/src/shared/ui/ToggleList.tsx";
 import { Link } from "react-router-dom";
 
 import "./ItemListHeader.scss";
