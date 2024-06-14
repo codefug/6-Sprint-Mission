@@ -2,7 +2,7 @@ import { useStore } from "@/app/store";
 import { postSignIn } from "@/shared/api/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const schema = z.object({
@@ -12,6 +12,7 @@ const schema = z.object({
 // 네트워크 요청을 보내기 전에 형식 검사
 export function LoginPage() {
   const { login } = useStore();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,20 +26,26 @@ export function LoginPage() {
         password: d.password,
       });
       if (!data) return;
-      console.log(d);
       login(data.accessToken);
+      navigate("/");
     })();
   };
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register("email")} />
-        {errors.email?.message && <p>{errors.email?.message as string}</p>}
-        <input {...register("password")} />
-        {errors.password?.message && (
-          <p>{errors.password?.message as string}</p>
-        )}
+        <div>
+          <input {...register("email")} />
+          {errors.email?.message && (
+            <p style={{ color: "red" }}>{errors.email?.message as string}</p>
+          )}
+        </div>
+        <div>
+          <input {...register("password")} type="password" />
+          {errors.password?.message && (
+            <p style={{ color: "red" }}>{errors.password?.message as string}</p>
+          )}
+        </div>
         <input type="submit" />
       </form>
       <Link to="/signup">회원가입</Link>
