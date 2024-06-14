@@ -11,7 +11,7 @@ import { ToggleList } from "@/shared/ui/ToggleList";
 
 interface ItemListHeaderProps {
   setOrderBy: Dispatch<SetStateAction<string>>;
-  setKeyword: Dispatch<SetStateAction<string>>;
+  setKeyword: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export function ItemListHeader({

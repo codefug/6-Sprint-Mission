@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
+import { FORM_DATA } from "../../../shared/constants/constants";
 
 export interface ImageListProps {
-  onChange: Dispatch<SetStateAction<object>>;
+  onChange: Dispatch<SetStateAction<typeof FORM_DATA>>;
 }

@@ -13,14 +13,14 @@ export async function getDatum({
   page = 1,
   pageSize = 10,
   orderBy = "recent",
-  keyword = "",
+  keyword,
 }: GetDatumProps) {
   const searchParams = new URLSearchParams({
     page: page.toString(),
     pageSize: pageSize.toString(),
     orderBy,
-    keyword,
   });
+  if (keyword) searchParams.set("keyword", keyword);
   const response = await fetch(
     `${BASE_URL}/products?${searchParams.toString()}`
   );

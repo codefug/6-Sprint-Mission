@@ -1,7 +1,7 @@
 import { RegisterHeader } from "../../../entities";
 import { ImageList } from "../../../widgets/ImageList";
 import { ItemInput } from "../../../entities/ItemInput";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import "./RegisterPage.scss";
 import { TagList } from "../../../entities/TagList";
@@ -10,22 +10,24 @@ import {
   PLACEHOLDER_LIST_FOR_REGISTER,
 } from "../../../shared/constants/constants";
 import { Main, MainContent } from "../../../shared/ui/MainContent";
+import { ItemTextArea } from "@/entities/ItemInput/ui/ItemInput";
 
 const tagPlaceholder =
   PLACEHOLDER_LIST_FOR_REGISTER[PLACEHOLDER_LIST_FOR_REGISTER.length - 1];
 
 export function RegisterPage() {
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [file, setFile] = useState(FORM_DATA);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const active: boolean =
-    file.title &&
-    file.description &&
-    file.price &&
-    file.image &&
-    file.tags.length !== 0;
+    file.title !== null &&
+    file.description !== null &&
+    file.price !== null &&
+    file.image !== null &&
+    file.tags !== null;
 
-  const handleDelete = (value) => {
+  const handleDelete = (value: string) => {
     setTags((prevTags) =>
       prevTags.length == 1 ? [] : prevTags.filter((v) => v !== value)
     );
@@ -43,16 +45,17 @@ export function RegisterPage() {
     handleChange(name, value);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const newValue = e.target.value;
-      e.target.value = "";
+      if (!textAreaRef.current) return;
+      const newValue = textAreaRef.current.value;
       setTags((prevTag) => [...prevTag, newValue]);
+      textAreaRef.current.value = "";
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(file);
   };
@@ -82,14 +85,15 @@ export function RegisterPage() {
                 )
             )}
             <div className="register__Tags">
-              <ItemInput
+              <ItemTextArea
                 name={tagPlaceholder.name}
                 value={tagPlaceholder.value}
                 placeholder={tagPlaceholder.placeholder}
                 type={tagPlaceholder.type}
                 key={-1}
                 onKeyDown={handleKeyPress}
-              ></ItemInput>
+                ref={textAreaRef}
+              />
               <TagList tags={tags} onDelete={handleDelete} />
             </div>
           </div>

@@ -2,7 +2,7 @@ import "./TagList.scss";
 import tagXicon from "/src/shared/asset/tagXicon.png";
 
 interface TagListProps {
-  className: string;
+  className?: string;
   tags: string[];
   onDelete?: (value: string) => void;
 }

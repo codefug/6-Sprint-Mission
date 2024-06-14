@@ -75,11 +75,11 @@ export const ProductPage = () => {
             value="문의하기"
             placeholder={INQUIRY_PLACEHOLDER}
             type="textarea"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               e.target.value !== ""
                 ? setInquirySubmit(true)
-                : setInquirySubmit(false)
-            }
+                : setInquirySubmit(false);
+            }}
           />
           <Button
             classNames={[
@@ -94,9 +94,7 @@ export const ProductPage = () => {
         {productInfo?.comments?.list && (
           <ProductCommentsSection comments={productInfo.comments.list} />
         )}
-        {dataState?.errorMessage && (
-          <span>{dataState.errorMessage.message}</span>
-        )}
+        {dataState?.errorMessage && <span>{dataState.errorMessage}</span>}
 
         <HomeLink to="/">
           <span>목록으로 돌아가기</span>

@@ -1,7 +1,5 @@
 import "./header.scss";
-import "/src/shared/style/link.scss";
 import logoUrl from "/src/shared/asset/headerLogo.png";
-// import { Button } from "/src/shared/ui/Button";
 import { Link } from "react-router-dom";
 import loginUrl from "/src/shared/asset/login.png";
 import { Button } from "@/shared/ui/Button";
@@ -36,15 +34,15 @@ export const Header = ({ isLogin, onLogin }: HeaderProps) => {
         {isLogin ? (
           <img src={loginUrl} />
         ) : (
-          // <Link to="/login" className="link">
-          <Button
-            classNames={["button--small", "button--blue", "button"]}
-            onClick={() => {
-              onLogin(true);
-            }}
-            value="로그인"
-          />
-          // </Link>
+          <Link to="/login" className="link">
+            <Button
+              classNames={["button--small", "button--blue", "button"]}
+              onClick={() => {
+                onLogin(true);
+              }}
+              value="로그인"
+            />
+          </Link>
         )}
       </div>
     </header>

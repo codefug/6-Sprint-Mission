@@ -13,7 +13,7 @@ export const ItemList = () => {
   const [items, setItems] = useState<TotalProductsData>();
   const [orderBy, setOrderBy] = useState("recent");
   const [page, setPage] = useState(1);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState<string>();
 
   const { isDesktop, isMobile, isTablet } = useScreenDetector();
 
