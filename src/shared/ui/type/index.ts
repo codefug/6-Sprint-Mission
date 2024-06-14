@@ -4,7 +4,7 @@ export interface ButtonProps {
   classNames: string[];
   value: ReactNode | string | number;
   active?: boolean;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export interface FlexContainerProps {

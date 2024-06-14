@@ -2,14 +2,20 @@ import { Link } from "react-router-dom";
 import likeIcon from "../../../shared/asset/ic_heart.png";
 import { formatPrice } from "../../../shared/util/util";
 import "./ItemCard.scss";
+import { TotalProductsData } from "@/shared/api/type";
 
-export const ItemCard = ({ item, cardType }) => {
+interface ItemCardProps {
+  item: TotalProductsData["list"][0];
+  cardType: string;
+}
+
+export const ItemCard = ({ item, cardType }: ItemCardProps) => {
   const { images, price, name, favoriteCount, id } = item;
 
   return (
     <Link className="card" to={`/items/${id}`}>
       <img
-        src={images}
+        src={images.join("")}
         alt={name}
         className={"card__image card__image" + cardType}
       />

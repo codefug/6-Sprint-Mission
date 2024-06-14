@@ -1,7 +1,7 @@
-import { BestItemList } from "../../../widgets/BestItemList";
-import { ItemList } from "/src/widgets/ItemList/index.jsx";
+import { ItemList } from "@/widgets/ItemList";
 
 import "./items.scss";
+import { BestItemList } from "@/widgets/BestItemList";
 
 export const Items = () => {
   return (

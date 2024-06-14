@@ -1,8 +1,11 @@
 import { Button } from "../../../shared/ui/Button";
 
 import "./RegisterHeader.scss";
+interface RegisterPage {
+  active: boolean;
+}
 
-export function RegisterHeader({ active }) {
+export function RegisterHeader({ active }: RegisterPage) {
   return (
     <header className="RegisterHeader">
       <h1>상품 등록하기</h1>

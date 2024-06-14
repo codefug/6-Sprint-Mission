@@ -31,14 +31,14 @@ export function RegisterPage() {
     );
   };
 
-  const handleChange = (name, value) => {
+  const handleChange = (name: string, value: string) => {
     setFile((prevFile) => ({
       ...prevFile,
       [name]: value,
     }));
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     handleChange(name, value);
   };
@@ -88,7 +88,7 @@ export function RegisterPage() {
                 placeholder={tagPlaceholder.placeholder}
                 type={tagPlaceholder.type}
                 key={-1}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
               ></ItemInput>
               <TagList tags={tags} onDelete={handleDelete} />
             </div>

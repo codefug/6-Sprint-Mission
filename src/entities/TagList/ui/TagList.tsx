@@ -1,8 +1,18 @@
 import "./TagList.scss";
 import tagXicon from "/src/shared/asset/tagXicon.png";
 
+interface TagListProps {
+  className: string;
+  tags: string[];
+  onDelete?: (value: string) => void;
+}
+
 // tags = {value : ~ , id: ~}
-export function TagList({ className = "styled", tags, onDelete = null }) {
+export function TagList({
+  className = "styled",
+  tags,
+  onDelete,
+}: TagListProps) {
   return (
     <div className="TagList">
       {tags &&
@@ -12,7 +22,7 @@ export function TagList({ className = "styled", tags, onDelete = null }) {
             key={crypto.randomUUID()}
           >
             <span>{v}</span>
-            {onDelete !== null && (
+            {onDelete && (
               <button
                 className="TagList__cancel"
                 onClick={() => {

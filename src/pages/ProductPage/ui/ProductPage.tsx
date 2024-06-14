@@ -16,6 +16,11 @@ import { FlexContainer } from "../../../shared/ui/Container";
 import styled from "styled-components";
 import backIcon from "../../../shared/asset/ic_back.png";
 
+interface GetProductInfoProps {
+  productId: string;
+  limit?: number;
+}
+
 export const ProductPage = () => {
   const { productId } = useParams();
   const [productInfo, setProductInfo] = useState(INITIAL_PRODUCT_INFO);
@@ -23,7 +28,10 @@ export const ProductPage = () => {
 
   const [inquirySubmit, setInquirySubmit] = useState(false);
 
-  const getProductInfo = async ({ productId, limit = 3 }) => {
+  const getProductInfo = async ({
+    productId,
+    limit = 3,
+  }: GetProductInfoProps) => {
     try {
       setDataState((prevState) => ({
         ...prevState,
@@ -38,14 +46,21 @@ export const ProductPage = () => {
         comments,
       }));
     } catch (error) {
-      setDataState((prevState) => ({ ...prevState, errorMessage: error }));
+      if (error instanceof Error) {
+        setDataState((prevState) => ({
+          ...prevState,
+          errorMessage: error.message,
+        }));
+      }
     } finally {
       setDataState((prevState) => ({ ...prevState, isLoading: false }));
     }
   };
 
   useEffect(() => {
-    getProductInfo({ productId });
+    if (productId) {
+      getProductInfo({ productId });
+    }
   }, [productId]);
 
   return (
@@ -60,7 +75,7 @@ export const ProductPage = () => {
             value="문의하기"
             placeholder={INQUIRY_PLACEHOLDER}
             type="textarea"
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               e.target.value !== ""
                 ? setInquirySubmit(true)
                 : setInquirySubmit(false)

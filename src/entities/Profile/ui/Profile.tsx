@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FlexContainer } from "../../../shared/ui/Container";
 import { getTimeDiffer } from "../../../shared/util/util";
 import { useMemo } from "react";
+import { SpecificCommentsData } from "@/shared/api/type";
 
 const Nickname = styled.div`
   font-size: 14px;
@@ -23,7 +24,12 @@ const TimeDiffer = styled.span`
   color: #9ca3af;
 `;
 
-export const Profile = ({ writer, updatedAt }) => {
+interface ProfileProps {
+  writer: SpecificCommentsData["list"][0]["writer"];
+  updatedAt: string;
+}
+
+export const Profile = ({ writer, updatedAt }: ProfileProps) => {
   const timeDiffer = useMemo(() => getTimeDiffer(updatedAt), [updatedAt]);
 
   return (

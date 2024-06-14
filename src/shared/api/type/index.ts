@@ -6,12 +6,12 @@ export interface GetDatumProps {
 }
 
 export interface GetProductProps {
-  productId: number | null;
+  productId: string | null;
 }
 
 export interface GetCommentsProps {
-  productId: number | null;
-  limit: string;
+  productId: string | null;
+  limit: number;
 }
 
 export interface TotalProductsData {

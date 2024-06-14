@@ -1,14 +1,25 @@
-import { useCustomMediaQuery } from "/src/shared/hooks/useCustomMediaQuery.ts";
-import { Button } from "/src/shared/ui/Button.tsx";
-import { ToggleList } from "/src/shared/ui/ToggleList.tsx";
+// import { useCustomMediaQuery } from "/src/shared/hooks/useCustomMediaQuery.ts";
+// import { Button } from "/src/shared/ui/Button.tsx";
+// import { ToggleList } from "/src/shared/ui/ToggleList.tsx";
 import { Link } from "react-router-dom";
 
 import "./ItemListHeader.scss";
-import styled from "styled-components";
+import { Dispatch, SetStateAction, useRef } from "react";
+import { useScreenDetector } from "@/shared/hooks/useScreenDetector";
+import { Button } from "@/shared/ui/Button";
+import { ToggleList } from "@/shared/ui/ToggleList";
 
-export function ItemListHeader({ setOrderBy, setKeyword }) {
-  const { isDesktop, isMobile } = useCustomMediaQuery();
+interface ItemListHeaderProps {
+  setOrderBy: Dispatch<SetStateAction<string>>;
+  setKeyword: Dispatch<SetStateAction<string>>;
+}
 
+export function ItemListHeader({
+  setOrderBy,
+  setKeyword,
+}: ItemListHeaderProps) {
+  const { isDesktop, isMobile } = useScreenDetector();
+  const inputRef = useRef<HTMLInputElement>(null);
   const handleRecentSort = () => {
     setOrderBy("recent");
   };
@@ -16,9 +27,10 @@ export function ItemListHeader({ setOrderBy, setKeyword }) {
   const handleFavoriteSort = () => {
     setOrderBy("favorite");
   };
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setKeyword(e.target["search"].value);
+    if (!inputRef.current) return;
+    setKeyword(inputRef.current.value);
   };
   if (!isMobile) {
     return (
@@ -31,6 +43,7 @@ export function ItemListHeader({ setOrderBy, setKeyword }) {
             name="search"
             placeholder={"검색할 상품을 입력해주세요"}
             className="ItemList__input"
+            ref={inputRef}
           />
         </form>
         <Link to="/additem" className="ItemList__link">

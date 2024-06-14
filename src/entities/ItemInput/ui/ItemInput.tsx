@@ -3,21 +3,28 @@
 //     <ItemInput name={v[0]} placeHolder={v[1]} type={v[2]} key={index} />
 //   ));
 // }
+import { KeyboardEventHandler } from "react";
 import "./ItemInput.scss";
+
+interface ItemInputProps {
+  className: string;
+  name: string;
+  placeholder: string;
+  type: string;
+  value: string;
+  onChange: (e: React.ChangeEvent) => void;
+  onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement>;
+}
 
 export function ItemInput({
   className = "styled",
   name,
   placeholder,
   type,
-  onKeyPress = null,
-  onChange = null,
+  onChange,
+  onKeyDown,
   value,
-}) {
-  const props = onKeyPress
-    ? { name, placeholder, type, onKeyPress, onChange }
-    : { name, placeholder, type, onChange };
-
+}: ItemInputProps) {
   return (
     <div className="ItemInput__card">
       <h2 className="ItemInput__subtitle">{value}</h2>
@@ -25,12 +32,18 @@ export function ItemInput({
         {type !== "textarea" ? (
           <input
             className={`ItemInput ItemInput--small ${className}`}
-            {...props}
+            name={name}
+            placeholder={placeholder}
+            onChange={onChange}
+            type={type}
           />
         ) : (
           <textarea
             className={`ItemInput ItemInput--big ${className}`}
-            {...props}
+            name={name}
+            placeholder={placeholder}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
           ></textarea>
         )}
       </div>
