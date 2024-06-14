@@ -4,15 +4,17 @@ import { PageListProps } from "../type";
 
 export const PageList = ({ callback, page }: PageListProps) => {
   let className = "PageList__li";
-  const [maximumNumber, setMaximumNumber] = useState<number>(5);
+  const [maximumNumber, setMaximumNumber] = useState<number>(6);
   const pageNumberList = useMemo(
-    () => new Array<number>(maximumNumber),
-    [maximumNumber]
+    () => [...new Array(maximumNumber).keys()].slice(1),
+    []
   );
+  console.log(maximumNumber);
+  console.log(page);
 
   useEffect(() => {
-    setMaximumNumber((prev) => prev + 5);
-  }, [page]);
+    setMaximumNumber((prev) => prev + 1);
+  }, []);
 
   return (
     <>
@@ -32,21 +34,18 @@ export const PageList = ({ callback, page }: PageListProps) => {
         >
           {"<"}
         </li>
-        {pageNumberList.map((pageNumber) => {
-          return +page === pageNumber ? (
-            <li
-              key={pageNumber}
-              className={className + " PageList__li--active"}
-              onClick={() => callback(pageNumber)}
-            >
-              {pageNumber}
-            </li>
-          ) : (
-            <li key={pageNumber} className={className}>
-              {pageNumber}
-            </li>
-          );
-        })}
+        {pageNumberList.map((pageNumber) => (
+          <li
+            key={pageNumber}
+            className={
+              className +
+              `${page === pageNumber ? " PageList__li--active" : ""}`
+            }
+            onClick={() => callback(pageNumber)}
+          >
+            {pageNumber}
+          </li>
+        ))}
         <li
           key=">"
           className={className}

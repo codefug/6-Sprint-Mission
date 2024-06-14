@@ -1,6 +1,9 @@
 .PageList {
   display: flex;
   justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
   &__li {
     display: flex;
     justify-content: center;

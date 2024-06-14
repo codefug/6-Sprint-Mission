@@ -16,11 +16,8 @@ export function TagList({
   return (
     <div className="TagList">
       {tags &&
-        tags.map((v) => (
-          <div
-            className={"TagList__card " + className}
-            key={crypto.randomUUID()}
-          >
+        tags.map((v, index) => (
+          <div className={"TagList__card " + className} key={index}>
             <span>{v}</span>
             {onDelete && (
               <button
