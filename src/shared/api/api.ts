@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { instance } from "./axios";
 import {
   GetCommentsProps,
@@ -95,8 +96,9 @@ export const postSignIn = async ({ email, password }: SignInRequestData) => {
     const data: SignInResponseData = response.data;
     return data;
   } catch (error) {
-    console.error(error);
-    alert(error);
-    throw new Error();
+    if (error instanceof AxiosError) {
+      console.log(error.response);
+      alert(error.response?.data?.message);
+    }
   }
 };
