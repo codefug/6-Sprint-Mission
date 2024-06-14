@@ -3,8 +3,10 @@ import logoUrl from "/src/shared/asset/headerLogo.png";
 import { Link } from "react-router-dom";
 import loginUrl from "/src/shared/asset/login.png";
 import { Button } from "@/shared/ui/Button";
+import { useStore } from "@/app/store";
 
-export const Header = ({ isLogin, onLogin }: HeaderProps) => {
+export const Header = () => {
+  const { user } = useStore();
   return (
     <header className="header">
       <div className="wrapper">
@@ -31,15 +33,12 @@ export const Header = ({ isLogin, onLogin }: HeaderProps) => {
             </Link>
           </div>
         </div>
-        {isLogin ? (
+        {user !== null ? (
           <img src={loginUrl} />
         ) : (
           <Link to="/login" className="link">
             <Button
               classNames={["button--small", "button--blue", "button"]}
-              onClick={() => {
-                onLogin(true);
-              }}
               value="로그인"
             />
           </Link>
