@@ -1,8 +1,12 @@
-import { BASE_URL } from "../constants/constants";
+import { instance } from "./axios";
 import {
   GetCommentsProps,
   GetDatumProps,
   GetProductProps,
+  SignInRequestData,
+  SignInResponseData,
+  SignUpRequestData,
+  SignUpResponseData,
   SpecificCommentsData,
   SpecificProductData,
   TotalProductsData,
@@ -15,41 +19,84 @@ export async function getDatum({
   orderBy = "recent",
   keyword,
 }: GetDatumProps) {
-  const searchParams = new URLSearchParams({
-    page: page.toString(),
-    pageSize: pageSize.toString(),
-    orderBy,
-  });
-  if (keyword) searchParams.set("keyword", keyword);
-  const response = await fetch(
-    `${BASE_URL}/products?${searchParams.toString()}`
-  );
-  if (!response.ok) {
-    throw new Error("데이터를 불러오는데 실패했습니다.");
+  try {
+    const searchParams = new URLSearchParams({
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+      orderBy,
+    });
+    if (keyword) searchParams.set("keyword", keyword);
+    const response = await instance(`/products?`, { params: searchParams });
+    return response.data as TotalProductsData;
+  } catch (error) {
+    console.error(error);
+    alert(error);
+    throw new Error();
   }
-  const data: TotalProductsData = await response.json();
-  return data;
 }
 
-export const getProduct = async ({ productId = null }: GetProductProps) => {
-  const response = await fetch(`${BASE_URL}/products/${productId}`);
-  if (!response.ok) {
-    throw new Error(`${productId}의 데이터를 가져오지 못했습니다.`);
+export const getProduct = async ({ productId }: GetProductProps) => {
+  try {
+    const response = await instance(`/products/${productId}`);
+    const data: SpecificProductData = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    alert(error);
+    throw Error();
   }
-  const data: SpecificProductData = await response.json();
-  return data;
 };
 
 export const getComments = async ({
   productId = null,
   limit,
 }: GetCommentsProps) => {
-  const response = await fetch(
-    `${BASE_URL}/products/${productId}/comments?limit=${limit}`
-  );
-  if (!response.ok) {
+  try {
+    const searchParams = new URLSearchParams({
+      limit: limit.toString(),
+    });
+    const response = await instance(`/products/${productId}/comments`, {
+      params: searchParams,
+    });
+    const data: SpecificCommentsData = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    alert(error);
     throw new Error(`${productId}의 comments 데이터를 가져오지 못했습니다.`);
   }
-  const data: SpecificCommentsData = await response.json();
-  return data;
+};
+
+export const postSignUp = async ({
+  email,
+  nickname,
+  password,
+  passwordConfirmation,
+}: SignUpRequestData) => {
+  try {
+    const response = await instance.post(`/auth/signUp`, {
+      email,
+      nickname,
+      password,
+      passwordConfirmation,
+    });
+    const data: SignUpResponseData = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    alert(error);
+    throw new Error();
+  }
+};
+
+export const postSignIn = async ({ email, password }: SignInRequestData) => {
+  try {
+    const response = await instance.post(`/auth/signIn`, { email, password });
+    const data: SignInResponseData = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    alert(error);
+    throw new Error();
+  }
 };

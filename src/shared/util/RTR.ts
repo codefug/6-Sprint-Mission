@@ -1,6 +1,6 @@
 import { authInstance } from "../api/axios";
 import { deleteRefreshToken, getRefreshToken, setRefreshToken } from "./token";
-import { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
+import { InternalAxiosRequestConfig } from "axios";
 
 // Refresh Token Rotation
 export const refreshTokenRotation = () => {
