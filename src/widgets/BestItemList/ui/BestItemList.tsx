@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ItemCard } from "../../../entities/ItemCard/ui/ItemCard";
 import { INITIAL_VALUE } from "../../../shared/constants/constants";
 
@@ -11,6 +11,7 @@ export const BestItemList = () => {
   const [dataState, setDataState] = useState(INITIAL_VALUE);
   const [items, setItems] = useState<TotalProductsData["list"] | null>(null);
   const orderBy = "favorite";
+  const isMounted = useRef(false);
 
   const getBestItems = async (options: BestItemListProps) => {
     try {
@@ -37,7 +38,11 @@ export const BestItemList = () => {
   };
 
   useEffect(() => {
+    isMounted.current = true;
     getBestItems({ pageSize: 4, orderBy });
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   return (
