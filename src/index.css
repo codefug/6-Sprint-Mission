@@ -3,6 +3,10 @@ html {
   box-sizing: border-box;
 }
 
+.link {
+  text-decoration: none;
+}
+
 @media (768px<=width<=1199px) {
   html {
     font-size: 8px;
