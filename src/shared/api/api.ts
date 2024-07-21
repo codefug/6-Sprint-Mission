@@ -11,7 +11,6 @@ import {
   SignUpResponseData,
   SpecificCommentsData,
   SpecificProductData,
-  TotalProductsData,
 } from "./type";
 import Cookies from "js-cookie";
 
@@ -178,6 +177,32 @@ interface PostProductsProps {
 export const postProducts = async (data: PostProductsProps) => {
   try {
     const response = await instance.post("/products", data);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.message);
+      alert(error.message);
+      throw new Error();
+    }
+    console.error(error);
+    alert(error);
+    throw new Error();
+  }
+};
+
+interface PostProductsProductIdCommentsProps {
+  productId: string;
+  content: string;
+}
+
+export const postProductProductIdComments = async ({
+  productId,
+  content,
+}: PostProductsProductIdCommentsProps) => {
+  try {
+    const response = await instance.post(`/products/${productId}/comments`, {
+      content,
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
