@@ -4,7 +4,6 @@ import "./ItemList.scss";
 import { INITIAL_VALUE } from "../../../shared/constants/constants";
 import { GetDatumProps, TotalProductsData } from "@/shared/api/type";
 import { getDatum } from "@/shared/api/api";
-import { PageList } from "@/entities/PageList";
 import { ItemCard, ItemListHeader } from "@/entities";
 import { useScreenDetector } from "@/shared/hooks/useScreenDetector";
 
@@ -69,7 +68,7 @@ export const ItemList = () => {
             );
           })}
       </div>
-      <PageList callback={handlePagination} page={page} />
+      {/* <PageList callback={handlePagination} page={page} /> */}
     </>
   );
 };

@@ -3,12 +3,9 @@ import { postSignIn } from "@/shared/api/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
+import { SignInSchema } from "../schema";
+import { isAxiosError } from "axios";
 
-const schema = z.object({
-  email: z.string().email({ message: "잘못된 이메일 형식입니다" }),
-  password: z.string().min(8, { message: "비밀번호를 8자 이상 입력해주세요" }),
-});
 // 네트워크 요청을 보내기 전에 형식 검사
 export function LoginPage() {
   const { login } = useUserStore();
@@ -17,18 +14,24 @@ export function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(schema) });
+  } = useForm({ resolver: zodResolver(SignInSchema) });
 
-  const onSubmit = (d: FieldValues) => {
-    (async () => {
+  const onSubmit = async (d: FieldValues) => {
+    try {
       const data = await postSignIn({
         email: d.email,
         password: d.password,
       });
-      if (!data) return;
-      login(data.accessToken);
+      login(data.accessToken, data.refreshToken);
       navigate("/");
-    })();
+    } catch (error) {
+      if (isAxiosError(error)) {
+        alert(error.message);
+        throw new Error(error.message);
+      }
+      alert(error);
+      throw new Error("알 수 없는 오류 발생");
+    }
   };
 
   return (

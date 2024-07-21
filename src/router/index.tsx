@@ -9,8 +9,8 @@ import { RegisterPage } from "../pages/RegisterPage";
 import { ErrorPage } from "../pages/ErrorPage";
 import { ProductPage } from "../pages/ProductPage";
 import { LoginPage } from "../pages/login";
-import { SignupPage } from "../pages/signup";
 import App from "@/app/App";
+import { SignupPage } from "@/pages/signup";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

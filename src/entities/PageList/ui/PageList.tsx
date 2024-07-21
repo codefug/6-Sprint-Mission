@@ -9,8 +9,6 @@ export const PageList = ({ callback, page }: PageListProps) => {
     () => [...new Array(maximumNumber).keys()].slice(1),
     []
   );
-  console.log(maximumNumber);
-  console.log(page);
 
   useEffect(() => {
     setMaximumNumber((prev) => prev + 1);
