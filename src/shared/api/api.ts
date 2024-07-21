@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { instanceWithoutInterceptors } from "./axios";
+import { instance, instanceWithoutInterceptors } from "./axios";
 import {
   GetCommentsProps,
   GetDatumProps,
@@ -124,7 +124,7 @@ export const postAuthRefreshToken = async () => {
   try {
     const refreshToken = Cookies.get("refreshToken");
     if (refreshToken === undefined) {
-      throw new Error("refreshToken이 없습니다.");
+      window.location.href = "/login";
     }
     const response = await instanceWithoutInterceptors.post(
       `/auth/refresh-token`,
@@ -138,6 +138,55 @@ export const postAuthRefreshToken = async () => {
       alert(error.response?.data?.message);
       throw new Error();
     }
+    throw new Error();
+  }
+};
+
+interface PostImagesUploadProps {
+  url: string;
+}
+
+export const postImagesUpload = async (imageFile: File) => {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+  try {
+    const response = await instance.post<PostImagesUploadProps>(
+      "/images/upload",
+      formData
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.message);
+      alert(error.message);
+      throw new Error();
+    }
+    console.error(error);
+    alert(error);
+    throw new Error();
+  }
+};
+
+interface PostProductsProps {
+  images: string[];
+  tags: string[];
+  price: number;
+  description: string;
+  name: string;
+}
+
+export const postProducts = async (data: PostProductsProps) => {
+  try {
+    const response = await instance.post("/products", data);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.message);
+      alert(error.message);
+      throw new Error();
+    }
+    console.error(error);
+    alert(error);
     throw new Error();
   }
 };

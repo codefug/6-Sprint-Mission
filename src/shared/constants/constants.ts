@@ -1,3 +1,4 @@
+import { HTMLInputTypeAttribute } from "react";
 import { SpecificCommentsData, SpecificProductData } from "../api/type";
 
 export const INITIAL_VALUE = {
@@ -16,12 +17,19 @@ export const INITIAL_PRODUCT_INFO = {
   comments: SpecificCommentsData | null;
 };
 
-export const PLACEHOLDER_LIST_FOR_REGISTER = [
+type PlaceholderListForRegister = {
+  value: string;
+  placeholder: string;
+  type: HTMLInputTypeAttribute;
+  name: string;
+}[];
+
+export const PLACEHOLDER_LIST_FOR_REGISTER: PlaceholderListForRegister = [
   {
     value: "상품명",
     placeholder: "상품명을 입력해주세요",
     type: "text",
-    name: "title",
+    name: "name",
   },
   {
     value: "상품 소개",
@@ -43,18 +51,20 @@ export const PLACEHOLDER_LIST_FOR_REGISTER = [
   },
 ];
 
-export const FORM_DATA = {
-  title: null,
-  image: null,
-  description: null,
-  price: null,
-  tags: null,
-} as {
+type FormDataType = {
   title: string | null;
   image: string | null | string[];
   description: string | null;
   price: number | null;
   tags: string[] | null;
+};
+
+export const FORM_DATA: FormDataType = {
+  title: null,
+  image: null,
+  description: null,
+  price: null,
+  tags: null,
 };
 
 export const INQUIRY_PLACEHOLDER =

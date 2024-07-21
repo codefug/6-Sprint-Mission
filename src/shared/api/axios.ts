@@ -22,7 +22,7 @@ const baseConfig: CreateAxiosDefaults = {
 export const instanceWithoutInterceptors = axios.create(baseConfig);
 
 // 인증 필요한 인스턴스
-export const instance = axios.create({ ...baseConfig, withCredentials: true });
+export const instance = axios.create(baseConfig);
 
 instance.interceptors.request.use(
   // 요청 전에 실행
@@ -61,10 +61,10 @@ instance.interceptors.response.use(
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
+
       try {
         // 토큰 재발급
         const response = await postAuthRefreshToken();
-
         // 토큰 갱신
         useUserStore.setState({
           user: { accessToken: response.accessToken },

@@ -8,16 +8,18 @@ import "./ItemInput.scss";
 
 interface ItemInputProps {
   className?: string;
-  name: string;
   placeholder: string;
   type: string;
+  name?: string;
+  id: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  registerData: object;
 }
 
 interface ItemTextAreaProps {
   className?: string;
   name: string;
+  id: string;
   placeholder: string;
   type: string;
   value: string;
@@ -26,21 +28,23 @@ interface ItemTextAreaProps {
 
 export function ItemInput({
   className = "styled",
-  name,
   placeholder,
+  name = "",
   type,
-  onChange,
+  id,
+  registerData,
   value,
 }: ItemInputProps) {
   return (
     <div className="ItemInput__card">
-      <h2 className="ItemInput__subtitle">{value}</h2>
+      <label id={id} className="ItemInput__subtitle">
+        {value}
+      </label>
       <div>
         <input
           className={`ItemInput ItemInput--small ${className}`}
-          name={name}
           placeholder={placeholder}
-          onChange={onChange}
+          {...registerData}
           type={type}
         />
       </div>
@@ -53,6 +57,7 @@ export const ItemTextArea = forwardRef<HTMLTextAreaElement, ItemTextAreaProps>(
     {
       className = "styled",
       name,
+      id,
       placeholder,
       onKeyDown,
       value,
@@ -61,14 +66,16 @@ export const ItemTextArea = forwardRef<HTMLTextAreaElement, ItemTextAreaProps>(
   ) => {
     return (
       <div className="ItemInput__card">
-        <h2 className="ItemInput__subtitle">{value}</h2>
+        <label className="ItemInput__subtitle" id={id}>
+          {value}
+        </label>
         <div>
           <textarea
             className={`ItemInput ItemInput--big ${className}`}
             name={name}
             placeholder={placeholder}
-            onKeyDown={onKeyDown}
             ref={ref}
+            onKeyDown={onKeyDown}
           ></textarea>
         </div>
       </div>

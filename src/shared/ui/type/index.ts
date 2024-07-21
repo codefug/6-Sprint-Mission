@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 export interface ButtonProps {
   classNames: string[];
   value: ReactNode | string | number;
+  type?: "button" | "reset" | "submit";
   active?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }

@@ -1,5 +1,5 @@
 interface ImageCardProps {
   src: string;
-  onClick: (src: string) => void;
+  onClick: () => void;
   className: string;
 }

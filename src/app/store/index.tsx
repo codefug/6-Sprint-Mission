@@ -14,8 +14,7 @@ type UserState = {
 
 export const useStoreSlice: StateCreator<UserState> = (set) => ({
   user: null,
-  login: (accessToken: string, refreshToken: string) => {
-    Cookies.set("refreshToken", refreshToken, { expires: 1 });
+  login: (accessToken: string) => {
     return set(() => ({ user: { accessToken } }));
   },
   logout: () => set(() => ({ user: null })),
@@ -23,7 +22,6 @@ export const useStoreSlice: StateCreator<UserState> = (set) => ({
 
 const persistedUserStore = persist<UserState>(useStoreSlice, {
   name: "user",
-  getStorage: () => localStorage,
 });
 
 export const useUserStore = create(persistedUserStore);

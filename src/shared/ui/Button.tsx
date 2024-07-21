@@ -13,12 +13,14 @@ import { ButtonProps } from "./type";
 export const Button = ({
   classNames,
   value,
+  type = "button",
   active = true,
   onClick,
 }: ButtonProps) => {
   return (
     <button
       disabled={!active}
+      type={type}
       onClick={onClick}
       className={"button " + classNames.join(" ")}
     >
